@@ -1,0 +1,25 @@
+{
+  "name": "react-d3-talk",
+  "main": "scripts/main.js",
+  "dependencies": {
+    "react": "^0.13.0",
+    "d3": "*",
+    "lodash": "*"
+  },
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "reactify": "^0.15.2",
+    "watchify": "^2.1.1"
+  },
+  "scripts": {
+    "start": "watchify -o scripts/bundle.js -v -d ."
+  },
+  "browserify": {
+    "transform": [
+      ["reactify", {"es6": true}]
+    ]
+  },
+  "jest": {
+    "rootDir": "./scripts"
+  }
+}
