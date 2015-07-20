@@ -15,19 +15,18 @@ class AppComponent extends React.Component {
     );
   }
   renderTitle() {
-    var style = {"text-align": "center"};
-    var imageStyle = {width: "500px", border: "1px solid #333", "border-radius": "3px",
-      padding: "5px", "margin-bottom": "40px"};
+    var style = {"text-align": "center", width: 500, margin: "auto"};
     return (
       <PageComponent title="On D3, React, and a little bit of Flux">
         <div style={style}>
-          <img src="images/expense.gif" style={imageStyle} />
-          <p>
-            Accompanying <a href="https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3" target="_new">
-            blog post</a> | <a href="sxywu.github.io/expenses" target="_new">
-            example app</a> | <a href="github.com/sxywu/expenses" target="_new">
-            code</a>
-          </p>
+          <ImageComponent src="images/expense.gif" width={500} contentPosition="bottom" contentType="caption">
+            <p>
+              accompanying <a href="https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3" target="_new">
+              blog post</a> | <a href="sxywu.github.io/expenses" target="_new">
+              example app</a> | <a href="github.com/sxywu/expenses" target="_new">
+              code</a>
+            </p>
+          </ImageComponent>
           <p>
             Shirley Wu (<a href="https://twitter.com/shirleyxywu" target="_new">@shirleyxywu</a>)
           </p>
@@ -56,9 +55,9 @@ class AppComponent extends React.Component {
     return (
       <PageComponent subtitle="The challenges Illumination presents">
         <ImageComponent src="images/legend.png" width={500} contentPosition="right">
-          <p>Visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit</p>
+          <p>Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit</p>
         </ImageComponent>
-        <ImageComponent src="images/enforce.gif" width={500} contentPosition="left">
+        <ImageComponent src="images/enforce.gif" width={500} contentPosition="right">
           <p>Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug</p>
         </ImageComponent>
       </PageComponent>
