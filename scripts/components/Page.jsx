@@ -5,8 +5,11 @@ class PageComponent extends React.Component {
     super(props);
     this.state = {style: this.calculateDimensions()};
   }
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', this._onWindowResize.bind(this));
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onWindowResize.bind(this));
   }
   _onWindowResize() {
     var style = this.calculateDimensions();
