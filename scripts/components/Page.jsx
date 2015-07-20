@@ -24,7 +24,7 @@ class PageComponent extends React.Component {
     var left = (documentWidth - width) / 2;
     var margin = top + 'px ' + left + 'px';
 
-    return {width, "min-height": height, margin};
+    return {width, minHeight: height, margin};
   }
   render() {
     var title = this.props.title && (<h1>{this.props.title}</h1>);

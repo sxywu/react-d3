@@ -15,7 +15,7 @@ class AppComponent extends React.Component {
     );
   }
   renderTitle() {
-    var style = {"text-align": "center", width: 500, margin: "auto"};
+    var style = {textAlign: "center", width: 500, margin: "auto"};
     return (
       <PageComponent title="On D3, React, and a little bit of Flux">
         <div style={style}>
@@ -55,10 +55,14 @@ class AppComponent extends React.Component {
     return (
       <PageComponent subtitle="The challenges Illumination presents">
         <ImageComponent src="images/legend.png" width={500} contentPosition="right">
-          <p>Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit</p>
+          <p>
+            <Label>1</Label> Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit.
+          </p>
         </ImageComponent>
         <ImageComponent src="images/enforce.gif" width={500} contentPosition="right">
-          <p>Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug</p>
+          <p>
+            <Label>2</Label> Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug.
+          </p>
         </ImageComponent>
       </PageComponent>
     );

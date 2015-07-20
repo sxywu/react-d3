@@ -3,11 +3,13 @@ var React = require('react');
 class LabelComponent extends React.Component {
   render() {
     var style = {
-      "font-family": "'Droid Serif', serif",
-      "color": "#fff",
-      "background-color": this.props.color || "#43A2CC",
-      "padding": "5px 10px",
-      "border-radius": "3px"
+      fontFamily: "'Droid Serif', serif",
+      color: "#fff",
+      backgroundColor: this.props.color || "#43A2CC",
+      padding: "5px 10px",
+      borderRadius: "3px",
+      marginBottom: "5px",
+      display: "inline-block"
     }
     return (
       <span style={style}>
