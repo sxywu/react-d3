@@ -1,6 +1,7 @@
 var React = require('react');
 var PageComponent = require('./Page.jsx');
 var Label = require('./Label.jsx');
+var ImageComponent = require('./Image.jsx');
 
 class AppComponent extends React.Component {
   render() {
@@ -8,6 +9,8 @@ class AppComponent extends React.Component {
       <div>
         {this.renderTitle()}
         {this.renderIllumination()}
+        {this.renderChallenges()}
+        {this.renderReactD3()}
       </div>
     );
   }
@@ -46,6 +49,25 @@ class AppComponent extends React.Component {
           <li>Assign roles to workloads within application</li>
           <li>Create rules between roles for specific or all services</li>
         </ol>
+      </PageComponent>
+    );
+  }
+  renderChallenges() {
+    return (
+      <PageComponent subtitle="The challenges Illumination presents">
+        <ImageComponent src="images/legend.png" width={500} contentPosition="right">
+          <p>Visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit</p>
+        </ImageComponent>
+        <ImageComponent src="images/enforce.gif" width={500} contentPosition="left">
+          <p>Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug</p>
+        </ImageComponent>
+      </PageComponent>
+    );
+  }
+  renderReactD3() {
+    return (
+      <PageComponent subtitle="D3 &#9829; React">
+
       </PageComponent>
     );
   }
