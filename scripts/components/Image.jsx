@@ -24,51 +24,56 @@ class ImageComponent extends React.Component {
     this.setState({width, imageHeight, contentHeight});
   }
   render() {
-    var padding = this.props.padding || 20;
+    var paddingLeft = this.props.paddingLeft || 20;
+    var paddingTop = this.props.paddingTop || 10;
     var style = {
       position: 'relative'
     };
     var imageStyle = {
       width: this.props.width || "auto",
-      position: 'absolute'
+      position: 'absolute',
+      borderRadius: "3px",
+      padding: "6px",
+      boxShadow: "0 0 6px #999"
     };
     var contentStyle = {
       verticalAlign: "top",
-      position: 'absolute'
+      position: 'absolute',
+      padding: "6px"
     };
     var content = null;
 
     if (this.state) {
       if (this.props.contentPosition === 'right') {
-        style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * padding;
-        imageStyle.left = padding;
-        imageStyle.top = padding;
-        contentStyle.left = this.props.width + 2 * padding;
-        contentStyle.top = padding;
-        contentStyle.width = this.state.width - this.props.width - 3 * padding;
+        style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
+        imageStyle.left = paddingLeft;
+        imageStyle.top = paddingTop;
+        contentStyle.left = this.props.width + 2 * paddingLeft;
+        contentStyle.top = paddingTop;
+        contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
         contentStyle.display = "inline-block";
       } else if (this.props.contentPosition === 'bottom') {
-        style.height = this.state.imageHeight + this.state.contentHeight + 3 * padding;
-        imageStyle.left = padding;
-        imageStyle.top = padding;
+        style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
+        imageStyle.left = paddingLeft;
+        imageStyle.top = paddingTop;
         contentStyle.width = this.props.width;
-        contentStyle.left = padding;
-        contentStyle.top = this.state.imageHeight + 2 * padding;
+        contentStyle.left = paddingLeft;
+        contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       } else if (this.props.contentPosition === 'left') {
-        style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * padding;
-        contentStyle.left = padding;
-        contentStyle.top = padding;
-        contentStyle.width = this.state.width - this.props.width - 3 * padding;
+        style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
+        contentStyle.left = paddingLeft;
+        contentStyle.top = paddingTop;
+        contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
         contentStyle.display = "inline-block";
-        imageStyle.left = contentStyle.width + 2 * padding;
-        imageStyle.top = padding;
+        imageStyle.left = contentStyle.width + 2 * paddingLeft;
+        imageStyle.top = paddingTop;
       } else if (this.props.contentPosition === 'top') {
-        style.height = this.state.imageHeight + this.state.contentHeight + 3 * padding;
-        contentStyle.left = padding;
-        contentStyle.top = padding;
+        style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
+        contentStyle.left = paddingLeft;
+        contentStyle.top = paddingTop;
         contentStyle.width = this.props.width;
-        imageStyle.left = padding;
-        imageStyle.top = this.state.contentHeight + 2 * padding;
+        imageStyle.left = paddingLeft;
+        imageStyle.top = this.state.contentHeight + 2 * paddingTop;
       }
     } else {
       contentStyle.width = this.props.width;
