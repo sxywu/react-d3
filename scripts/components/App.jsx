@@ -15,11 +15,11 @@ class AppComponent extends React.Component {
     );
   }
   renderTitle() {
-    var style = {textAlign: "center", width: 500, margin: "auto"};
+    var style = {textAlign: "center", width: 750, margin: "auto"};
     return (
       <PageComponent title="On D3, React, and a little bit of Flux">
         <div style={style}>
-          <ImageComponent src="images/expense.gif" width={500} contentPosition="bottom" contentType="caption">
+          <ImageComponent src="images/expense.gif" width={750} contentPosition="bottom" contentType="caption">
             <p>
               accompanying <a href="https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3" target="_new">
               blog post</a> | <a href="sxywu.github.io/expenses" target="_new">
