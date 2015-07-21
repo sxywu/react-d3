@@ -43,23 +43,27 @@ class AppComponent extends React.Component {
         <p>
           <Label>Illumination</Label> is a part of Illumio's Adaptive Security Platform (ASP) that <Label color="#E86753">visualizes</Label> application traffic and helps with rule building.
         </p>
-        <ol>
-          <li>Assign ruleset to application</li>
-          <li>Assign roles to workloads within application</li>
-          <li>Create rules between roles for specific or all services</li>
-        </ol>
+        <ImageComponent src="images/ruleset.gif" width={400} contentType="caption">
+          <p>1.  Assign ruleset to application</p>
+        </ImageComponent>
+        <ImageComponent src="images/roles.gif" width={400} contentType="caption">
+          <p>2.  Assign roles to workloads within application</p>
+        </ImageComponent>
+        <ImageComponent src="images/rules.gif" width={400} contentType="caption">
+          <p>3.  Create rules between roles for specific or all services</p>
+        </ImageComponent>
       </PageComponent>
     );
   }
   renderChallenges() {
     return (
       <PageComponent subtitle="The challenges Illumination presents">
-        <ImageComponent src="images/legend.png" width={500} contentPosition="right">
+        <ImageComponent src="images/legend.png" width={500} contentPosition="left">
           <p>
             <Label>1</Label> Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit.
           </p>
         </ImageComponent>
-        <ImageComponent src="images/enforce.gif" width={500} contentPosition="right">
+        <ImageComponent src="images/enforce.gif" width={500} contentPosition="left">
           <p>
             <Label>2</Label> Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug.
           </p>

@@ -52,13 +52,6 @@ class ImageComponent extends React.Component {
         contentStyle.top = paddingTop;
         contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
         contentStyle.display = "inline-block";
-      } else if (this.props.contentPosition === 'bottom') {
-        style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
-        imageStyle.left = paddingLeft;
-        imageStyle.top = paddingTop;
-        contentStyle.width = this.props.width;
-        contentStyle.left = paddingLeft;
-        contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       } else if (this.props.contentPosition === 'left') {
         style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
         contentStyle.left = paddingLeft;
@@ -74,6 +67,13 @@ class ImageComponent extends React.Component {
         contentStyle.width = this.props.width;
         imageStyle.left = paddingLeft;
         imageStyle.top = this.state.contentHeight + 2 * paddingTop;
+      } else {
+        style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
+        imageStyle.left = paddingLeft;
+        imageStyle.top = paddingTop;
+        contentStyle.width = this.props.width;
+        contentStyle.left = paddingLeft;
+        contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       }
     } else {
       contentStyle.width = this.props.width;
