@@ -27,7 +27,8 @@ class ImageComponent extends React.Component {
     var paddingLeft = this.props.paddingLeft || 20;
     var paddingTop = this.props.paddingTop || 10;
     var style = {
-      position: 'relative'
+      position: 'relative',
+      verticalAlign: 'top'
     };
     var imageStyle = {
       position: 'absolute',
@@ -43,45 +44,46 @@ class ImageComponent extends React.Component {
     var content = null;
 
     if (this.state) {
+      style.display = 'inline-block';
+      style.width = this.props.width || this.state.width;
+      var imageWidth = this.props.imageWidth > style.width ? style.width : this.props.imageWidth;
       if (this.props.contentPosition === 'right') {
         style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
         imageStyle.left = paddingLeft;
         imageStyle.top = paddingTop;
-        imageStyle.width = this.props.width;
-        contentStyle.left = this.props.width + 2 * paddingLeft;
+        imageStyle.width = imageWidth;
+        contentStyle.left = imageWidth + 2 * paddingLeft;
         contentStyle.top = paddingTop;
-        contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
+        contentStyle.width = style.width - imageWidth - 3 * paddingLeft;
         contentStyle.display = "inline-block";
       } else if (this.props.contentPosition === 'left') {
         style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
         contentStyle.left = paddingLeft;
         contentStyle.top = paddingTop;
-        contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
+        contentStyle.width = style.width - imageWidth - 3 * paddingLeft;
         contentStyle.display = "inline-block";
         imageStyle.left = contentStyle.width + 2 * paddingLeft;
         imageStyle.top = paddingTop;
-        imageStyle.width = this.props.width;
-
-        console.log(this.state.width, this.props.width, contentStyle.width)
+        imageStyle.width = imageWidth;
       } else if (this.props.contentPosition === 'top') {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         contentStyle.left = paddingLeft;
         contentStyle.top = paddingTop;
-        contentStyle.width = this.props.width - 2 * paddingLeft;
+        contentStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
         imageStyle.left = paddingLeft;
         imageStyle.top = this.state.contentHeight + 2 * paddingTop;
-        imageStyle.width = this.props.width - 2 * paddingLeft;
+        imageStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
       } else {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         imageStyle.left = paddingLeft;
         imageStyle.top = paddingTop;
-        imageStyle.width = this.props.width - 2 * paddingLeft;
-        contentStyle.width = this.props.width - 2 * paddingLeft;
+        imageStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
+        contentStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
         contentStyle.left = paddingLeft;
         contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       }
     } else {
-      contentStyle.width = this.props.width;
+      contentStyle.width = imageWidth;
     }
     
     if (this.props.contentType === 'caption') {
