@@ -30,7 +30,6 @@ class ImageComponent extends React.Component {
       position: 'relative'
     };
     var imageStyle = {
-      width: this.props.width || "auto",
       position: 'absolute',
       borderRadius: "3px",
       padding: "6px",
@@ -48,6 +47,7 @@ class ImageComponent extends React.Component {
         style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
         imageStyle.left = paddingLeft;
         imageStyle.top = paddingTop;
+        imageStyle.width = this.props.width;
         contentStyle.left = this.props.width + 2 * paddingLeft;
         contentStyle.top = paddingTop;
         contentStyle.width = this.state.width - this.props.width - 3 * paddingLeft;
@@ -60,18 +60,23 @@ class ImageComponent extends React.Component {
         contentStyle.display = "inline-block";
         imageStyle.left = contentStyle.width + 2 * paddingLeft;
         imageStyle.top = paddingTop;
+        imageStyle.width = this.props.width;
+
+        console.log(this.state.width, this.props.width, contentStyle.width)
       } else if (this.props.contentPosition === 'top') {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         contentStyle.left = paddingLeft;
         contentStyle.top = paddingTop;
-        contentStyle.width = this.props.width;
+        contentStyle.width = this.props.width - 2 * paddingLeft;
         imageStyle.left = paddingLeft;
         imageStyle.top = this.state.contentHeight + 2 * paddingTop;
+        imageStyle.width = this.props.width - 2 * paddingLeft;
       } else {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         imageStyle.left = paddingLeft;
         imageStyle.top = paddingTop;
-        contentStyle.width = this.props.width;
+        imageStyle.width = this.props.width - 2 * paddingLeft;
+        contentStyle.width = this.props.width - 2 * paddingLeft;
         contentStyle.left = paddingLeft;
         contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       }
