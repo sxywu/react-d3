@@ -4,6 +4,7 @@ var Label = require('./Label.jsx');
 var ImageComponent = require('./Image.jsx');
 var ColumnComponent = require('./Column.jsx');
 var ColumnChildComponent = require('./ColumnChild.jsx');
+var CodeComponent = require('./Code.jsx');
 
 class AppComponent extends React.Component {
   render() {
@@ -81,8 +82,15 @@ class AppComponent extends React.Component {
   }
   renderReactD3() {
     return (
-      <PageComponent subtitle="D3 &#9829; React">
-
+      <PageComponent subtitle="D3 and React: Intelligent Updates">
+        <ColumnComponent>
+          <ColumnChildComponent>
+            <CodeComponent path="scripts/code/d3-enter-update-exit.txt" />
+          </ColumnChildComponent>
+          <ColumnChildComponent>
+            <CodeComponent path="scripts/code/react-render.txt" />
+          </ColumnChildComponent>
+        </ColumnComponent>
       </PageComponent>
     );
   }

@@ -29,3 +29,8 @@ h2 {
   border-bottom: 1px solid #333;
   padding: 40px;
 }
+
+code.language-javascript {
+  display: inline-block;
+  white-space: pre-wrap;
+}
