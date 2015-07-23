@@ -4,7 +4,8 @@
   "dependencies": {
     "react": "^0.13.0",
     "d3": "*",
-    "lodash": "*"
+    "lodash": "*",
+    "react-prism": "*"
   },
   "devDependencies": {
     "browserify": "^6.2.0",
