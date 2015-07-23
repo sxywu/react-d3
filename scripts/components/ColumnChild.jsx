@@ -6,7 +6,8 @@ class ColumnChildComponent extends React.Component {
     var style = {
       display: 'inline-block',
       width: this.props.width,
-      padding: this.props.padding || 20
+      padding: this.props.padding || 20,
+      verticalAlign: 'top'
     }
     return (
       <div style={style}>
