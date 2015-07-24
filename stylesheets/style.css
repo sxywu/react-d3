@@ -33,4 +33,5 @@ h2 {
 code.language-javascript {
   display: inline-block;
   white-space: pre-wrap;
+  width: 100%;
 }

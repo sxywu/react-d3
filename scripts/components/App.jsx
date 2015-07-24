@@ -82,13 +82,20 @@ class AppComponent extends React.Component {
   }
   renderReactD3() {
     return (
-      <PageComponent subtitle="D3 and React: Intelligent Updates">
+      <PageComponent subtitle="Intelligent Updates">
         <ColumnComponent>
           <ColumnChildComponent>
+            <h3><a href="http://www.d3js.org" target="_new">D3</a>'s <a href="https://github.com/mbostock/d3/wiki/Selections#enter" target="_new">enter</a>-update-<a href="https://github.com/mbostock/d3/wiki/Selections#exit">exit</a>
+            </h3>
             <CodeComponent path="scripts/code/d3-enter-update-exit.txt" />
           </ColumnChildComponent>
           <ColumnChildComponent>
+            <h3><a href="https://facebook.github.io/react/" target="_new">React</a>'s <a href="https://facebook.github.io/react/docs/component-specs.html#render" target="_new">render</a> and <a href="https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods">lifecycle</a> methods
+            </h3>
             <CodeComponent path="scripts/code/react-render.txt" />
+            <em>
+              (From <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Expense.jsx" target="_new">components/Expense.jsx</a> and <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>)
+            </em>
           </ColumnChildComponent>
         </ColumnComponent>
       </PageComponent>
