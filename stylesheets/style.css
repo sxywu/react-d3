@@ -13,13 +13,12 @@ body {
 h1, h2 {
   font-family: 'Droid Serif', serif;
   font-weight: bold;
-  margin-left: 20px;
+  text-align: center;
   margin-bottom: 40px;
 }
 
 h1 {
   font-size: 48px;
-  text-align: center;
 }
 
 h2 {

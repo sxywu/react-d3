@@ -5,6 +5,7 @@ var ImageComponent = require('./Image.jsx');
 var ColumnComponent = require('./Column.jsx');
 var ColumnChildComponent = require('./ColumnChild.jsx');
 var CodeComponent = require('./Code.jsx');
+var CaptionComponent = require('./Caption.jsx');
 
 class AppComponent extends React.Component {
   render() {
@@ -13,6 +14,7 @@ class AppComponent extends React.Component {
         {this.renderTitle()}
         {this.renderIllumination()}
         {this.renderChallenges()}
+        {this.renderExpenseApp()}
         {this.renderIntelligentUpdates()}
         {this.renderProblem()}
       </div>
@@ -24,12 +26,10 @@ class AppComponent extends React.Component {
       <PageComponent title="On D3, React, and a little bit of Flux">
         <div style={style}>
           <ImageComponent src="images/expense.gif" imageWidth={750} contentPosition="bottom" contentType="caption">
-            <p>
-              accompanying <a href="https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3" target="_new">
-              blog post</a> | <a href="sxywu.github.io/expenses" target="_new">
-              example app</a> | <a href="github.com/sxywu/expenses" target="_new">
-              code</a>
-            </p>
+            accompanying <a href="https://medium.com/@sxywu/on-d3-react-and-a-little-bit-of-flux-88a226f328f3" target="_new">
+            blog post</a> | <a href="http://sxywu.github.io/expenses" target="_new">
+            example app</a> | <a href="http://www.github.com/sxywu/expenses" target="_new">
+            code</a>
           </ImageComponent>
           <p>
             Shirley Wu (<a href="https://twitter.com/shirleyxywu" target="_new">@shirleyxywu</a>)
@@ -42,24 +42,24 @@ class AppComponent extends React.Component {
     return (
       <PageComponent subtitle="Illumio's Illumination: How I Got Here">
         <ColumnComponent>
+          <ImageComponent src="images/illumination.png" imageWidth={400} />
           <ColumnChildComponent>
+            <h3><a href="https://www.illumio.com/home" target="_new">Illumio</a></h3>
             <p>
-              <Label>Illumio</Label> is an enterprise datacenter and cloud computing security company.
+              Enterprise datacenter and cloud computing security company.
             </p>
+            <h3><a href="https://www.illumio.com/product-services#illumination" target="_new">Illumination</a></h3>
             <p>
-              <Label>Illumination</Label> is a part of Illumio's Adaptive Security Platform (ASP) that <Label color="#E86753">visualizes</Label> application traffic and helps with rule building.
+              A part of Illumio's Adaptive Security Platform (ASP) that visualizes application traffic and helps with rule building.
             </p>
           </ColumnChildComponent>
-          <ImageComponent src="images/ruleset.gif" imageWidth={400} contentType="caption">
-            <p>1.  Assign ruleset to application</p>
-          </ImageComponent>
         </ColumnComponent>
         <ColumnComponent>
           <ImageComponent src="images/roles.gif" imageWidth={400} contentType="caption">
-            <p>2.  Assign roles to workloads within application</p>
+            <p>Assign roles to workloads within application</p>
           </ImageComponent>
           <ImageComponent src="images/rules.gif" imageWidth={400} contentType="caption">
-            <p>3.  Create rules between roles for specific or all services</p>
+            <p>Create rules between roles for specific or all services</p>
           </ImageComponent>
         </ColumnComponent>
       </PageComponent>
@@ -81,9 +81,25 @@ class AppComponent extends React.Component {
       </PageComponent>
     );
   }
+  renderExpenseApp() {
+    return (
+      <PageComponent subtitle="Example Expense App">
+        <ImageComponent src="images/add.gif" imageWidth={500} contentPosition="right">
+          <Label>1</Label>  Add an expense or category from the left panel.
+        </ImageComponent>
+        <ImageComponent src="images/drag.gif" imageWidth={500} contentPosition="right">
+          <Label>2</Label>  Drag an expense over a category to add it to that category. An expense can belong to multiple categories.
+        </ImageComponent>
+        <ImageComponent src="images/click.gif" imageWidth={500} contentPosition="right">
+          <Label>3</Label>  Click on any expense or category to view it in detail. While in detail view, take actions (delete, edit, close).
+        </ImageComponent>
+      </PageComponent>
+    );
+  }
   renderIntelligentUpdates() {
     return (
-      <PageComponent subtitle="React &amp; D3: Intelligent Updates">
+      <PageComponent subtitle="React &amp; D3">
+        <h3><Label>1</Label>  Intelligent Updates</h3>
         <ColumnComponent>
           <ColumnChildComponent>
             <h3><a href="https://facebook.github.io/react/" target="_new">React</a></h3>
@@ -106,12 +122,24 @@ class AppComponent extends React.Component {
             
           </ColumnChildComponent>
         </ColumnComponent>
+
+        <h3><Label>2</Label>  Problem</h3>
+        <ColumnComponent>
+          <ColumnChildComponent>
+            <p>
+              As part of the component lifecycle, React renders directly to the DOM.  D3 uses a combination of <a href="https://github.com/mbostock/d3/wiki/Selections#selecting-elements" target="_new">selections</a> and <a href="https://github.com/mbostock/d3/wiki/Selections#data" target="_new">data-binding</a> to calculate what should be in the DOM.
+            </p>
+            <p>
+              <strong>Both require access to the DOM.</strong>
+            </p>
+          </ColumnChildComponent>
+        </ColumnComponent>
         <ColumnComponent>
           <ColumnChildComponent>
             <CodeComponent path="scripts/code/react-render.txt" />
-            <em>
-              (From <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Expense.jsx" target="_new">components/Expense.jsx</a> and <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>)
-            </em>
+            <CaptionComponent>
+              From <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Expense.jsx" target="_new">components/Expense.jsx</a> and <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>
+            </CaptionComponent>
           </ColumnChildComponent>
           <ColumnChildComponent>
             <CodeComponent path="scripts/code/d3-enter-update-exit.txt" />
@@ -123,7 +151,14 @@ class AppComponent extends React.Component {
   renderProblem() {
     return (
       <PageComponent subtitle="React &amp; D3: Problem and Solution">
-        <p>Both React and D3 wants control of the DOM.</p>
+        <ColumnComponent>
+          <ColumnChildComponent>
+            <h3>Problem</h3>
+            <p>
+
+            </p>
+          </ColumnChildComponent>
+        </ColumnComponent>
       </PageComponent>
     );
   }
