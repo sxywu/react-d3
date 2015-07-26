@@ -1,5 +1,6 @@
 var React = require('react');
 var _ = require('lodash');
+var CaptionComponent = require('./Caption.jsx');
 
 class ImageComponent extends React.Component {
   constructor(props) {
@@ -41,7 +42,6 @@ class ImageComponent extends React.Component {
       position: 'absolute',
       padding: "6px"
     };
-    var content = null;
 
     if (this.state) {
       style.display = 'inline-block';
@@ -69,16 +69,16 @@ class ImageComponent extends React.Component {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         contentStyle.left = paddingLeft;
         contentStyle.top = paddingTop;
-        contentStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
+        contentStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
         imageStyle.left = paddingLeft;
         imageStyle.top = this.state.contentHeight + 2 * paddingTop;
-        imageStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
+        imageStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
       } else {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
         imageStyle.left = paddingLeft;
         imageStyle.top = paddingTop;
-        imageStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
-        contentStyle.width = (this.props.width || imageWidth) - 2 * paddingLeft;
+        imageStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
+        contentStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
         contentStyle.left = paddingLeft;
         contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       }
@@ -93,11 +93,21 @@ class ImageComponent extends React.Component {
 
     var image = (<img src={this.props.src} style={imageStyle} ref="image"
       onLoad={this.calculateDimensions.bind(this)} />);
-    var content = (
-      <div style={contentStyle} ref="content">
-        {this.props.children}
-      </div>
-    );
+    var content = null;
+    if (this.props.contentType === 'caption') {
+      content = (
+        <CaptionComponent style={contentStyle} ref="content">
+          {this.props.children }
+        </CaptionComponent>
+      );
+    } else {
+      content = (
+        <div style={contentStyle} ref="content">
+          {this.props.children}
+        </div>
+      );
+    }
+
     if (this.props.contentPosition === 'left' || this.props.contentPosition === 'top') {
       content = (
         <div style={style}>
