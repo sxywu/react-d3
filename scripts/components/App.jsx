@@ -13,7 +13,8 @@ class AppComponent extends React.Component {
         {this.renderTitle()}
         {this.renderIllumination()}
         {this.renderChallenges()}
-        {this.renderReactD3()}
+        {this.renderIntelligentUpdates()}
+        {this.renderProblem()}
       </div>
     );
   }
@@ -39,7 +40,7 @@ class AppComponent extends React.Component {
   }
   renderIllumination() {
     return (
-      <PageComponent subtitle="How I got here: Illumio's Illumination">
+      <PageComponent subtitle="Illumio's Illumination: How I Got Here">
         <ColumnComponent>
           <ColumnChildComponent>
             <p>
@@ -66,7 +67,7 @@ class AppComponent extends React.Component {
   }
   renderChallenges() {
     return (
-      <PageComponent subtitle="The challenges Illumination presents">
+      <PageComponent subtitle="Illumination: The Challenges">
         <ImageComponent src="images/legend.png" imageWidth={500} contentPosition="left">
           <p>
             <Label>1</Label> Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit.
@@ -80,24 +81,49 @@ class AppComponent extends React.Component {
       </PageComponent>
     );
   }
-  renderReactD3() {
+  renderIntelligentUpdates() {
     return (
-      <PageComponent subtitle="Intelligent Updates">
+      <PageComponent subtitle="React &amp; D3: Intelligent Updates">
         <ColumnComponent>
           <ColumnChildComponent>
-            <h3><a href="http://www.d3js.org" target="_new">D3</a>'s <a href="https://github.com/mbostock/d3/wiki/Selections#enter" target="_new">enter</a>-update-<a href="https://github.com/mbostock/d3/wiki/Selections#exit">exit</a>
-            </h3>
-            <CodeComponent path="scripts/code/d3-enter-update-exit.txt" />
+            <h3><a href="https://facebook.github.io/react/" target="_new">React</a></h3>
+            <p>
+              A library for developing single-page apps whose data change over time.
+            </p>
+            <p>
+              User specifies component structure with <a href="https://facebook.github.io/react/docs/component-specs.html#render" target="_new">render</a>, and operates on component at different points of the component <a href="https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods">lifecycle</a>.<br />
+              React then uses <CodeComponent inline={true}>render</CodeComponent> output to calculate minimum updates in DOM between data changes.
+            </p>
           </ColumnChildComponent>
           <ColumnChildComponent>
-            <h3><a href="https://facebook.github.io/react/" target="_new">React</a>'s <a href="https://facebook.github.io/react/docs/component-specs.html#render" target="_new">render</a> and <a href="https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods">lifecycle</a> methods
-            </h3>
+            <h3><a href="http://www.d3js.org" target="_new">D3</a></h3>
+            <p>
+              A library for developing interactive visualizations.
+            </p>
+            <p>
+              User binds data to a selection, and uses <a href="https://github.com/mbostock/d3/wiki/Selections#enter" target="_new">enter</a> to append new elements to DOM, and <a href="https://github.com/mbostock/d3/wiki/Selections#exit">exit</a> to remove elements no longer in the new dataset from DOM.
+            </p>
+            
+          </ColumnChildComponent>
+        </ColumnComponent>
+        <ColumnComponent>
+          <ColumnChildComponent>
             <CodeComponent path="scripts/code/react-render.txt" />
             <em>
               (From <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Expense.jsx" target="_new">components/Expense.jsx</a> and <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>)
             </em>
           </ColumnChildComponent>
+          <ColumnChildComponent>
+            <CodeComponent path="scripts/code/d3-enter-update-exit.txt" />
+          </ColumnChildComponent>
         </ColumnComponent>
+      </PageComponent>
+    );
+  }
+  renderProblem() {
+    return (
+      <PageComponent subtitle="React &amp; D3: Problem and Solution">
+        <p>Both React and D3 wants control of the DOM.</p>
       </PageComponent>
     );
   }

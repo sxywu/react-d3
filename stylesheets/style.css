@@ -13,12 +13,13 @@ body {
 h1, h2 {
   font-family: 'Droid Serif', serif;
   font-weight: bold;
-  text-align: center;
+  margin-left: 20px;
   margin-bottom: 40px;
 }
 
 h1 {
   font-size: 48px;
+  text-align: center;
 }
 
 h2 {
@@ -34,4 +35,8 @@ code.language-javascript {
   display: inline-block;
   white-space: pre-wrap;
   width: 100%;
+}
+
+code.language-javascript.inline-code {
+  display: inline;
 }

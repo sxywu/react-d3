@@ -5,7 +5,8 @@
     "react": "^0.13.0",
     "d3": "*",
     "lodash": "*",
-    "react-prism": "*"
+    "react-prism": "*",
+    "classnames": "*"
   },
   "devDependencies": {
     "browserify": "^6.2.0",
