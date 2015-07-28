@@ -27,7 +27,7 @@ h2 {
 
 .Page {
   border-bottom: 1px solid #333;
-  padding: 40px;
+  padding: 40px 40px 80px 40px;
 }
 
 code.language-javascript {
