@@ -1,0 +1,23 @@
+// expenses
+[
+   {
+      "id":"expense/1",
+      "name":"Safeway",
+      "amount":40,
+      "categories":[
+         "category/1",
+         "category/3"
+      ],
+      "timestamp":"2015-07-28T06:33:44.506Z"
+   },
+   {
+      "id":"expense/2",
+      "name":"Gas",
+      "amount":38,
+      "categories":[
+         "category/2",
+         "category/4"
+      ],
+      "timestamp":"2015-07-27T07:00:00.000Z"
+   }
+]

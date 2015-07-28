@@ -1,0 +1,39 @@
+// categories
+[
+   {
+      "id":"category/1",
+      "name":"Groceries",
+      "fill":"#1f77b4",
+      "total":40,
+      "size":9.193548387096774,
+      "x":329.6557684784223,
+      "y":843.1935483870968
+   },
+   {
+      "id":"category/3",
+      "name":"Chase Sapphire",
+      "fill":"#2ca02c",
+      "total":40,
+      "size":9.193548387096774,
+      "x":359.2458685997349,
+      "y":843.1935483870968
+   },
+   {
+      "id":"category/2",
+      "name":"Gas",
+      "fill":"#ff7f0e",
+      "total":38,
+      "size":7.5,
+      "x":517.9415981489467,
+      "y":841.5
+   },
+   {
+      "id":"category/4",
+      "name":"Chase Freedom",
+      "fill":"#d62728",
+      "total":38,
+      "size":7.5,
+      "x":493.96377623189113,
+      "y":841.5
+   }
+]
