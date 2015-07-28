@@ -1,0 +1,5 @@
+<g class="expense" opacity="1" transform="translate(169.63,525.47)">
+  <rect class="expenseRect" x="-5" y="-5" rx="3" ry="3" width="10" height="10" fill="#fafafa" stroke="#0B486B" stroke-opacity="0.5" stroke-width="2" />
+  <rect class="textBG" opacity="0.75" rx="5" ry="5" fill="#fafafa" y="6.4921875" x="-21.53" height="17.01" width="43.06" />
+  <text text-anchor="middle" dy=".35em" opacity="0.5" y="15">Coffee</text>
+</g>
