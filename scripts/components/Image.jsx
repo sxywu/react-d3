@@ -46,7 +46,7 @@ class ImageComponent extends React.Component {
     if (this.state) {
       style.display = 'inline-block';
       style.width = this.props.width || this.state.width;
-      var imageWidth = this.props.imageWidth > style.width ? style.width : this.props.imageWidth;
+      var imageWidth = this.props.imageWidth || style.width;
       if (this.props.contentPosition === 'right') {
         style.height = Math.max(this.state.imageHeight, this.state.contentHeight) + 2 * paddingTop;
         imageStyle.left = paddingLeft;
@@ -67,19 +67,19 @@ class ImageComponent extends React.Component {
         imageStyle.width = imageWidth;
       } else if (this.props.contentPosition === 'top') {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
-        contentStyle.left = paddingLeft;
+        contentStyle.width = imageWidth - 2 * paddingLeft;
+        contentStyle.left = (style.width - contentStyle.width) / 2;
         contentStyle.top = paddingTop;
-        contentStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
-        imageStyle.left = paddingLeft;
+        imageStyle.width = imageWidth - 2 * paddingLeft;
+        imageStyle.left = (style.width - imageStyle.width) / 2;;
         imageStyle.top = this.state.contentHeight + 2 * paddingTop;
-        imageStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
       } else {
         style.height = this.state.imageHeight + this.state.contentHeight + 3 * paddingTop;
-        imageStyle.left = paddingLeft;
+        imageStyle.width = imageWidth - 2 * paddingLeft;
+        imageStyle.left = (style.width - imageStyle.width) / 2;
         imageStyle.top = paddingTop;
-        imageStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
-        contentStyle.width = (style.width || imageWidth) - 2 * paddingLeft;
-        contentStyle.left = paddingLeft;
+        contentStyle.width = imageWidth - 2 * paddingLeft;
+        contentStyle.left = (style.width - contentStyle.width) / 2;
         contentStyle.top = this.state.imageHeight + 2 * paddingTop;
       }
     } else {
