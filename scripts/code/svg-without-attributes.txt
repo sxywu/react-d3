@@ -1,0 +1,5 @@
+<g class="expense">
+  <rect class="expenseRect" />
+  <rect class="textBG" />
+  <text />
+</g>

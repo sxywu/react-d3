@@ -74,12 +74,12 @@ class AppComponent extends React.Component {
       <PageComponent subtitle="Illumination: The Challenges">
         <ImageComponent src="images/legend.png" imageWidth={500} contentPosition="left">
           <p>
-            <Label>1</Label> Nested visual elements whose structures change depending on user actions &#8594; hard to keep track of with D3's enter-update-exit.
+            <Label>1</Label> Nested visual elements whose structures change depending on user actions.
           </p>
         </ImageComponent>
         <ImageComponent src="images/enforce.gif" imageWidth={600} contentPosition="left">
           <p>
-            <Label>2</Label> Views who listen to changes on models, models that could in turn be mutated by views &#8594; spaghetti ball of events, hard to debug.
+            <Label>2</Label> Views who listen to changes on models, models that could in turn be mutated by views.
           </p>
         </ImageComponent>
       </PageComponent>
@@ -102,29 +102,29 @@ class AppComponent extends React.Component {
   }
   renderReactD3() {
     return (
-      <PageComponent subtitle="React &amp; D3">
+      <PageComponent subtitle="React &amp; D3: Intelligent Updates">
 
         <SectionComponent position="first">
-          <h3><Label>1</Label>  Intelligent updates</h3>
           <ColumnComponent>
             <ColumnChildComponent>
               <h3><a href="https://facebook.github.io/react/" target="_new">React</a></h3>
               <p>
                 A library for developing single-page apps whose data change over time.
               </p>
-              <p>
-                User specifies component structure with <a href="https://facebook.github.io/react/docs/component-specs.html#render" target="_new">render</a>, and operates on component at different points of the component <a href="https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods">lifecycle</a>.<br />
-                React then uses <CodeComponent inline={true}>render</CodeComponent> output to calculate minimum updates in DOM between data changes.
-              </p>
             </ColumnChildComponent>
             <ColumnChildComponent>
               <h3><a href="http://www.d3js.org" target="_new">D3</a></h3>
               <p>
-                A library for developing interactive visualizations.
+                A library for developing interactive data visualizations.
               </p>
-              <p>
-                User binds data to a selection, and uses <a href="https://github.com/mbostock/d3/wiki/Selections#enter" target="_new">enter</a> to append new elements to DOM, and <a href="https://github.com/mbostock/d3/wiki/Selections#exit">exit</a> to remove elements no longer in the new dataset from DOM.
-              </p>
+            </ColumnChildComponent>
+          </ColumnComponent>
+          <ColumnComponent>
+            <ColumnChildComponent>
+              <CodeComponent path="scripts/code/svg-without-attributes.txt" />
+              <CaptionComponent>
+                DOM structure of an expense rectangle in the <a href="http://sxywu.github.io/expenses" target="_new">example app</a> with no attributes filled in
+              </CaptionComponent>
             </ColumnChildComponent>
           </ColumnComponent>
           <ColumnComponent>
@@ -140,30 +140,8 @@ class AppComponent extends React.Component {
           </ColumnComponent>
         </SectionComponent>
 
-        <SectionComponent>
-          <h3><Label>2</Label>  Problem</h3>
-          <ColumnComponent>
-            <ColumnChildComponent>
-              <p>
-                As part of the component lifecycle, React renders directly to the DOM.  Certain subsets of D3 (<a href="https://github.com/mbostock/d3/wiki/Transitions" target="_new">transitions</a>, <a href="https://github.com/mbostock/d3/wiki/SVG-Axes" target="_new">axes</a>, etc.) also render directly to the DOM.
-              </p>
-              <p>
-                <strong>Both want control of the DOM, so how do we divide responsibility?</strong>
-              </p>
-            </ColumnChildComponent>
-          </ColumnComponent>
-        </SectionComponent>
-
         <SectionComponent position="last">
-          <h3><Label>3</Label>  Solution</h3>
-          <ColumnComponent>
-            <ColumnChildComponent>
-              <p>
-                <strong>React manages the structure, D3 manages the attributes.</strong>
-              </p>
-              <CodeComponent path="scripts/code/svg-structure.txt" />
-            </ColumnChildComponent>
-          </ColumnComponent>
+          <h2>React manages the structure, D3 manages the attributes.</h2>
         </SectionComponent>
 
       </PageComponent>
@@ -176,15 +154,13 @@ class AppComponent extends React.Component {
           <ImageComponent src="images/transition.gif" imageWidth={600} />
         </ColumnComponent>
         <ColumnComponent>
-          <ColumnChildComponent>
-            <p>
-              Call <CodeComponent inline={true}>ExpenseVisualization.enter</CodeComponent> from <CodeComponent inline={true}>ExpenseComponent.componentDidMount</CodeComponent>: As soon as React inserts the element into the DOM, D3 sets the starting attributes.
-            </p>
-            <p>
-              Call <CodeComponent inline={true}>ExpenseVisualization.update</CodeComponent> from <CodeComponent inline={true}>ExpenseComponent.componentDidUpdate</CodeComponent>: When any part of the data changes, D3 transitions the element to its next set of attributes.
-            </p>
-          </ColumnChildComponent>
-        </ColumnComponent>
+            <ColumnChildComponent>
+              <CodeComponent path="scripts/code/svg-with-attributes.txt" />
+              <CaptionComponent>
+                DOM structure of an expense rectangle in the <a href="http://sxywu.github.io/expenses" target="_new">example app</a> with all attributes filled in
+              </CaptionComponent>
+            </ColumnChildComponent>
+          </ColumnComponent>
         <ColumnComponent>
           <ColumnChildComponent>
             <CodeComponent path="scripts/code/d3-transition.txt" />
