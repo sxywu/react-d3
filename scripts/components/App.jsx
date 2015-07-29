@@ -19,6 +19,7 @@ class AppComponent extends React.Component {
         {this.renderReactD3()}
         {this.renderTransition()}
         {this.renderFlux()}
+        {this.renderConclusion()}
       </div>
     );
   }
@@ -263,6 +264,13 @@ class AppComponent extends React.Component {
             </ColumnChildComponent>
           </ColumnComponent>
         </SectionComponent>
+      </PageComponent>
+    );
+  }
+  renderConclusion() {
+    return (
+      <PageComponent>
+        <h2>Thank you for having me!  <img src="images/thankyou.gif" /></h2>
       </PageComponent>
     );
   }

@@ -39,3 +39,13 @@ code.language-javascript {
 code.language-javascript.inline-code {
   display: inline;
 }
+
+#share {
+  position: fixed;
+  top: 5px;
+  left: 10px;
+}
+
+#share div {
+  padding-bottom: 5px;
+}
