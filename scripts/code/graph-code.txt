@@ -1,4 +1,24 @@
 class GraphComponent extends React.Component {
+ getInitialState() {
+  return {
+   categories: [],
+   expenses: [],
+   links: []
+  }
+ },
+
+ componentDidMount() {
+  GraphStore.addChangeListener(this._onChange); 
+  SelectionStore.addChangeListener(this._onChange);
+ },
+ componentWillReceiveProps(nextProps) {
+  this._onChange(nextProps);
+ },
+ componentWillUnMount() {
+  GraphStore.removeChangeListener(this._onChange);
+  SelectionStore.removeChangeListener(this._onChange);
+ },
+ 
  // use the next props to calculate and set the next state
  _onChange(props, width, height) {
   props = props || this.props;
@@ -32,7 +52,7 @@ class GraphComponent extends React.Component {
   var expenses = this.state.expenses.map((expense) => {
    return (<ExpenseComponent key={expense.id} data={expense} />);
   });
-  
+
   return (
    <svg>
     <g className=”graph”>

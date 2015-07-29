@@ -182,15 +182,12 @@ class AppComponent extends React.Component {
     return (
       <PageComponent subtitle="Flux">
         <SectionComponent position="first">
-          <h3><Label>1</Label>  Unidirectional data flow</h3>
           <ColumnComponent>
-            <ImageComponent src="images/flux.png" imageWidth={600} contentPosition="right">
-              <p>
-                <strong>Stores</strong> hold data.  They register with the dispatcher, and emit changes that views subscribe to.
-              </p>
-              <p>
-                <strong>Views</strong> listen to store changes and render based on new data.  User actions trigger <strong>view actions</strong> that in turn trigger dispatch events.
-              </p>
+            <ImageComponent src="images/flux.png" imageWidth={750}>
+              <CaptionComponent>
+                General Flux structure, as outlined in Facebook's <a href="https://facebook.github.io/flux/docs/overview.html#content" type="_new">docs</a>
+              </CaptionComponent>
+              <br />
               <p>
                 Views can get data from stores, but they cannot mutate the store without first going through the dispatcher.
               </p>
@@ -198,37 +195,22 @@ class AppComponent extends React.Component {
           </ColumnComponent>
         </SectionComponent>
 
-        <h3><Label>2</Label>  Expense app structure</h3>
         <SectionComponent>
-          <ImageComponent src="images/expense-flux.png" imageWidth={750} contentPosition="right">
-            <p>
-              Calculate graph data in <CodeComponent inline={true}>Graph.jsx</CodeComponent>, and pass the data down to <CodeComponent inline={true}>Category.jsx</CodeComponent>, <CodeComponent inline={true}>Link.jsx</CodeComponent>, and <CodeComponent inline={true}>Expense.jsx</CodeComponent> via props.
-            </p>
-            <p>
-              Graph data is recalculated anytime <CodeComponent inline={true}>GraphStore</CodeComponent> or <CodeComponent inline={true}>SelectionStore</CodeComponent> emits a change, or anytime <CodeComponent inline={true}>ExpenseApp.jsx</CodeComponent> (which listens to <CodeComponent inline={true}>CategoryStore</CodeComponent> and <CodeComponent inline={true}>ExpenseStore</CodeComponent>) passes down new props.
-            </p>
+          <ImageComponent src="images/expense-flux.png" imageWidth={750}>
+            <CaptionComponent>
+              Flux structure applied to the example <a href="http://sxywu.github.io/expenses" target="_new">expense app</a>
+            </CaptionComponent>
           </ImageComponent>
         </SectionComponent>
 
-        <h3><Label>3</Label>  Graph code on change</h3>
         <SectionComponent>
           <ColumnComponent>
             <ColumnChildComponent>
-              <CodeComponent path="scripts/code/graph-code.txt" />
-              <CaptionComponent>
-                A subset of <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>
-              </CaptionComponent>
-            </ColumnChildComponent>
-          </ColumnComponent>
-        </SectionComponent>
-
-        <h3><Label>4</Label>  Store data &#8594; Renderable graph data</h3>
-        <SectionComponent position="last">
-          <ColumnComponent>
-            <ColumnChildComponent>
+              <p>Store data</p>
               <CodeComponent path="scripts/code/categories-store-data.txt" />
             </ColumnChildComponent>
             <ColumnChildComponent>
+              <p>Renderable Graph Data</p>
               <CodeComponent path="scripts/code/categories-graph-data.txt" />
             </ColumnChildComponent>
           </ColumnComponent>
@@ -240,6 +222,21 @@ class AppComponent extends React.Component {
               <CodeComponent path="scripts/code/expenses-graph-data.txt" />
             </ColumnChildComponent>
           </ColumnComponent>
+        </SectionComponent>
+
+        <SectionComponent>
+          <ColumnComponent>
+            <ColumnChildComponent>
+              <CodeComponent path="scripts/code/graph-code.txt" />
+              <CaptionComponent>
+                A subset of <a href="https://github.com/sxywu/expenses/blob/master/scripts/components/Graph.jsx" target="_new">components/Graph.jsx</a>
+              </CaptionComponent>
+            </ColumnChildComponent>
+          </ColumnComponent>
+        </SectionComponent>
+
+        <SectionComponent position="last">
+          <h2>Delay graph data calculation to as late in the Flux cycle as possible</h2>
         </SectionComponent>
       </PageComponent>
     );
