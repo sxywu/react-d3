@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <script src="https://fb.me/react-0.14.3.js"></script>
+  <script src="https://fb.me/react-dom-0.14.3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://underscorejs.org/underscore-min.js"></script>
+  <script src="generate_data.js"></script>
+  
+  <style>
+    body {
+      font-family: Helvetica;
+    }
+
+    .update {
+      color: #888888;
+      position:absolute;
+      top: 10px;
+      left: 10px;
+      padding: 5px 10px;
+      margin: 10px;
+      cursor: pointer;
+      border: 1px solid #999999;
+      border-radius: 3px;
+    }
+
+    .node circle {
+      fill: #888888;
+      stroke: #fff;
+      stroke-width: 2px;
+    }
+
+    .node text {
+      fill: #888888;
+      stroke: none;
+      font-size: .6em;
+    }
+
+    .link {
+      stroke: #cccccc;
+      stroke-opacity: .6;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="main" />
+
+<script type="text/babel">
+
+var width = 960;
+var height = 500;
+var force = d3.layout.force()
+  .charge(-300)
+  .linkDistance(50)
+  .size([width, height]);
+
+var Graph = React.createClass({
+  getInitialState() {
+    return {
+      nodes: [],
+      links: [],
+    };
+  },
+
+  componentWillMount() {
+    force.on('tick', () => {
+      this.forceUpdate()
+    });
+  },
+
+  componentWillReceiveProps(nextProps) {
+    // child shouldn't mutate prop, so clone
+    // (d3's force function will directly mutate nodes and links array)
+    var nodes = _.clone(nextProps.nodes);
+    var links = _.clone(nextProps.links);
+    this.setState({nodes, links});
+
+    // also start force calculation
+    force.nodes(nodes).links(links)
+      .start();
+  },
+
+  render() {
+    // use React to draw all the nodes, d3 calculates the x and y
+    var nodes = _.map(this.state.nodes, (node) => {
+      var transform = 'translate(' + node.x + ',' + node.y + ')';
+      return (
+        <g className='node' key={node.key} transform={transform}>
+          <circle r={node.size} />
+          <text x={node.size + 5} dy='.35em'>{node.key}</text>
+        </g>
+      );
+    });
+    var links = _.map(this.state.links, (link) => {
+      var key = link.source.key + ',' + link.target.key;
+      return (
+        <line className='link' key={key} strokeWidth={link.size}
+          x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
+      );
+    });
+
+    return (
+      <svg width={width} height={height}>
+        <g>
+          {links}
+          {nodes}
+        </g>
+      </svg>
+    );
+  }
+});
+
+var App = React.createClass({
+  getInitialState() {
+    // randomData is loaded in from external file generate_data.js
+    // and returns an object with nodes and links
+    return randomData([], width, height);
+  },
+
+  componentDidMount() {
+
+  },
+
+  updateData() {
+    var newState = randomData(this.state.nodes, width, height);
+    this.setState(newState);
+  },
+
+  render() {
+    return (
+      <div>
+        <div className="update" onClick={this.updateData}>update</div>
+        <Graph nodes={this.state.nodes} links={this.state.links} />
+      </div>
+    );
+  },
+});
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('main') 
+);
+
+
+
+</script>
+
+</body>
