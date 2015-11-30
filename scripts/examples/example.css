@@ -1,0 +1,32 @@
+body {
+  font-family: Helvetica;
+}
+
+.update {
+  color: #888888;
+  position:absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  margin: 10px;
+  cursor: pointer;
+  border: 1px solid #999999;
+  border-radius: 3px;
+}
+
+.node circle {
+  fill: #888888;
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+.node text {
+  fill: #888888;
+  stroke: none;
+  font-size: .6em;
+}
+
+.link {
+  stroke: #cccccc;
+  stroke-opacity: .6;
+}
