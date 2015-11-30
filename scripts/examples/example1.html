@@ -7,41 +7,8 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://underscorejs.org/underscore-min.js"></script>
   <script src="generate_data.js"></script>
-  
-  <style>
-    body {
-      font-family: Helvetica;
-    }
 
-    .update {
-      color: #888888;
-      position:absolute;
-      top: 10px;
-      left: 10px;
-      padding: 5px 10px;
-      margin: 10px;
-      cursor: pointer;
-      border: 1px solid #999999;
-      border-radius: 3px;
-    }
-
-    .node circle {
-      fill: #888888;
-      stroke: #fff;
-      stroke-width: 2px;
-    }
-
-    .node text {
-      fill: #888888;
-      stroke: none;
-      font-size: .6em;
-    }
-
-    .link {
-      stroke: #cccccc;
-      stroke-opacity: .6;
-    }
-  </style>
+  <link rel="stylesheet" href="example.css" type="text/css" />
 </head>
 
 <body>
@@ -58,29 +25,23 @@ var force = d3.layout.force()
   .size([width, height]);
 
 var Graph = React.createClass({
-  getInitialState() {
-    return {
-      nodes: [],
-      links: [],
-    };
-  },
-
   componentWillMount() {
     force.on('tick', () => {
+      // after force calculation starts, call
+      // forceUpdate on the React component on each tick
       this.forceUpdate()
     });
   },
 
   componentWillReceiveProps(nextProps) {
-    // child shouldn't mutate prop, so clone
-    // (d3's force function will directly mutate nodes and links array)
-    var nodes = _.clone(nextProps.nodes);
-    var links = _.clone(nextProps.links);
-    this.setState({nodes, links});
+    // we should actually clone the nodes and links
+    // since we're not supposed to directly mutate
+    // props passed in from parent, and d3's force function
+    // mutates the nodes and links array directly
+    // we're bypassing that here for sake of brevity in example
+    force.nodes(nextProps.nodes).links(nextProps.links);
 
-    // also start force calculation
-    force.nodes(nodes).links(links)
-      .start();
+    force.start();
   },
 
   render() {
@@ -95,9 +56,8 @@ var Graph = React.createClass({
       );
     });
     var links = _.map(this.state.links, (link) => {
-      var key = link.source.key + ',' + link.target.key;
       return (
-        <line className='link' key={key} strokeWidth={link.size}
+        <line className='link' key={link.key} strokeWidth={link.size}
           x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
       );
     });
@@ -115,16 +75,19 @@ var Graph = React.createClass({
 
 var App = React.createClass({
   getInitialState() {
-    // randomData is loaded in from external file generate_data.js
-    // and returns an object with nodes and links
-    return randomData([], width, height);
+    return {
+      nodes: [],
+      links: [],
+    };
   },
 
   componentDidMount() {
-
+    this.updateData();
   },
 
   updateData() {
+    // randomData is loaded in from external file generate_data.js
+    // and returns an object with nodes and links
     var newState = randomData(this.state.nodes, width, height);
     this.setState(newState);
   },
