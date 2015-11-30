@@ -27,10 +27,11 @@ function randomData(nodes, width, height) {
       var link = {};
       link.source = _.random(0, nodes.length - 1);
       link.target = _.random(0, nodes.length - 1);
+      link.key = link.source + ',' + link.target;
       link.size = _.random(1, 3);
 
       return link;
-    }).uniq((link) => link.source + ',' + link.target)
+    }).uniq((link) => link.key)
     .value();
 
   maintainNodePositions(oldNodes, nodes, width, height);
