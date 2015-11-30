@@ -111,7 +111,7 @@ var Graph = React.createClass({
   componentDidMount() {
     this.d3Graph = d3.select(ReactDOM.findDOMNode(this));
     force.on('tick', () => {
-      // after force calculation starts, call update graph
+      // after force calculation starts, call updateGraph
       // which uses d3 to manipulate the attributes,
       // and React doesn't have to go through lifecycle on each tick
       this.d3Graph.call(updateGraph);
@@ -184,8 +184,6 @@ ReactDOM.render(
   <App />,
   document.getElementById('main') 
 );
-
-
 
 </script>
 
