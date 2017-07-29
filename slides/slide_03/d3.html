@@ -1,13 +1,40 @@
 <style>
+  #d3 {
+    width: 500px;
+    left: 50%;
+    margin-left: -250px;
+  }
   #d3 span {
     line-height: 2;
+  }
+  #d3 .top {
+    position: absolute;
+    width: 100%;
+    top: 0;
   }
 </style>
 
 <section id="d3">
-  <h2>D3 needs the dom for</h2>
+  <h2>D3</h2>
 
-  <span class='fragment'>transitions</span><br />
-  <span class='fragment'>axes</span><br />
-  <span class='fragment'>brushes</span><br />
+  <div style='position:relative'>
+    <div class='fragment fade-out' data-fragment-index='3'>needs dom</div><br />
+    <div class='top fragment fade-in' data-fragment-index='3' style='text-decoration:line-through'>
+      needs dom
+    </div>
+  </div>
+
+  <div style='position:relative'>
+    <div class='fragment fade-out' data-fragment-index='3'>
+      <span class='fragment fade-in' data-fragment-index='0'>transitions</span><br />
+      <span class='fragment fade-in' data-fragment-index='1'>axes</span><br />
+      <span class='fragment fade-in' data-fragment-index='2'>brushes</span><br />
+    </div>
+
+    <div class='top'>
+      <span class='fragment fade-in' data-fragment-index='4'>layouts</span><br />
+      <span class='fragment fade-in' data-fragment-index='5'>geo</span><br />
+      <span class='fragment fade-in' data-fragment-index='6'>shape</span><br />
+    </div>
+  </div>
 </section>
