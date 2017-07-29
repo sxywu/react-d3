@@ -12,8 +12,9 @@
  *********************************************/
 
 @font-face {
-  font-family: "King Basil";
-  src: url("../lib/font/King-Basil.ttf");
+  font-family: "Open Sans";
+  src: url("../lib/font/OpenSans-Bold.ttf");
+  font-weight: bold;
 }
 
 @font-face {
@@ -102,6 +103,10 @@
 
 .reveal h1 {
   text-shadow: none; }
+
+.reveal strong {
+  font-family: 'Open Sans', sans-serif;
+}
 
 /*********************************************
  * OTHER
