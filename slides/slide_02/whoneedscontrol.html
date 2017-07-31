@@ -1,39 +1,37 @@
 <style>
-  #whoneedscontrol p {
-    line-height: 2;
+  #whoneedscontrol {
+    width: 800px;
+    left: 50%;
+    margin-left: -400px;
   }
-
-  #whoneedscontrol .block {
-    display: inline-block;
-    line-height: 2;
-    width: 300px;
+  #whoneedscontrol h2 {
+    margin: 0;
+  }
+  #whoneedscontrol .top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
 </style>
 
 <section id="whoneedscontrol">
   <h2>Who <span style='border-bottom: 1px solid'>needs</span> control of the DOM?</h2>
 
-  <span class='block'>
-    ⚛<br />
-    <span class='fragment'>
-      ↓<br />
-      virtual dom<br />
+  <div style='position:relative'>
+    <img src='slides/slide_02/0.png' />
+    <span class='fragment top'>
+      <img src='slides/slide_02/1.png' />
     </span>
-    <span class='fragment'>
-      ↓<br />
-      ✅
+    <span class='fragment top'>
+      <img src='slides/slide_02/2.png' />
     </span>
-  </span>
+    <span class='fragment top'>
+      <img src='slides/slide_02/3.png' />
+    </span>
+    <span class='fragment top'>
+      <img src='slides/slide_02/4.png' />
+    </span>
+  </div>
 
-  <span class='block'>
-    d3<br />
-    <span class='fragment'>
-      ↓<br />
-      make viz for web<br />
-    </span>
-    <span class='fragment'>
-      ↓<br />
-      ✅<span class='fragment'>...🤔❓</span>
-    </span>
-  </span>
 </section>
