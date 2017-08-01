@@ -12,6 +12,11 @@
  *********************************************/
 
 @font-face {
+ font-family: "Open Sans";
+ src: url("../lib/font/OpenSans-Regular.ttf");
+}
+
+@font-face {
   font-family: "Open Sans";
   src: url("../lib/font/OpenSans-Bold.ttf");
   font-weight: bold;
