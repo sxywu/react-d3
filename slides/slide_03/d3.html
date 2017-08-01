@@ -12,22 +12,39 @@
     width: 100%;
     top: 0;
   }
+  #d3 .fragment {
+    position: relative;
+  }
+  #d3 .subtitle {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 38px; /*image is 120px tall*/
+  }
+  #d3 .subtitle span {
+    background: rgba(255,255,255,0.75);
+    padding: 2px 10px;
+  }
 </style>
 
 <section id="d3">
   <h2>D3</h2>
 
   <div style='position:relative'>
-    <div class='fragment fade-out' data-fragment-index='3'>needs dom</div><br />
+    <div class='fragment fade-out' data-fragment-index='3'>needs dom 🖌</div><br />
     <div class='top fragment fade-in' data-fragment-index='3' style='text-decoration:line-through'>
-      needs dom
+      needs dom 🖌
     </div>
   </div>
 
   <div style='position:relative'>
     <div class='fragment fade-out' data-fragment-index='3'>
-      <span class='fragment fade-in' data-fragment-index='0'>transitions</span><br />
+      <div class='fragment fade-in' data-fragment-index='0'>
         <img src='slides/slide_03/transition.gif' />
+        <div class='subtitle'>
+          <span>transitions</span>
+        </div>
+      </div>
       <span class='fragment fade-in' data-fragment-index='1'>axes</span><br />
       <span class='fragment fade-in' data-fragment-index='2'>brushes</span><br />
     </div>
