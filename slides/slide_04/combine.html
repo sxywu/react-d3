@@ -2,15 +2,34 @@
   #combine span {
     line-height: 2;
   }
+  #combine .top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+  }
 </style>
 
 <section id="combine">
-  <h2>#1.</h2>
-  <div>
-    <span style='text-decoration:line-through'>transitions</span><br />
-    <span style='text-decoration:line-through'>axes</span><br />
-    <span style='text-decoration:line-through'>brushes</span>
+  <div class='fragment fade-out' data-fragment-index='0'>
+    <h2>#1.</h2>
+    <div>
+      <span style='text-decoration:line-through'>transitions</span><br />
+      <span style='text-decoration:line-through'>axes</span><br />
+      <span style='text-decoration:line-through'>brushes</span>
+    </div>
+    <img src='slides/slide_04/1.png' />
+    <p>react renders ✨ d3 calculates</p>
   </div>
-  <img src='slides/slide_04/1.png' />
-  <p>react renders ✨ d3 calculates</p>
+  <div class='top fragment fade-in' data-fragment-index='0'>
+    <h2>#2.</h2>
+    <div>
+      <span>
+        transitions<br />
+        axes<br />
+        brushes
+      </span>
+    </div>
+    <img src='slides/slide_04/2.png' />
+    <p>d3 renders ✨ d3 calculates</p>
+  </div>
 </section>
