@@ -1,5 +1,21 @@
 <style>
-  #shirley p {
+  #shirley {
+    width: 1920px;
+    height: 1080px;
+  }
+  #shirley .background img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1000;
+  }
+  #shirley .content {
+    margin-top: 20%;
+    background: #fff;
+    padding: 20px;
+    display: inline-block;
     line-height: 2;
   }
   #shirley img {
@@ -8,12 +24,16 @@
 </style>
 
 <section id="shirley">
-  <h2>Hi, I'm Shirley!</h2>
-  <p>
-    I'm a freelance software engineer,<br />
-    and I build <strong>data visualizations</strong>.
-  </p>
-  <p class='fragment'>
-    <img src='slides/slide_01/timeline.png' />
-  </p>
+  <span class='content fragment fade-out' data-fragment-index='0' >
+    <h2>Hi, I'm Shirley!</h2>
+    <div>
+      I'm a freelance software engineer,<br />
+      and I build <strong>data visualizations</strong>.
+    </div>
+  </span>
+  <div class='background'>
+    <img class='fragment fade-in' data-fragment-index='0' src='slides/slide_01/story.png' />
+    <img class='fragment' src='slides/slide_01/d3.png' />
+    <img class='fragment' src='slides/slide_01/reactd3.png' />
+  </div>
 </section>
