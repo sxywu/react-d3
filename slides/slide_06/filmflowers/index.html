@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js'></script>
+  <link href='https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700' rel='stylesheet' type='text/css'>
+
+  <style>
+    body {
+      font-family: "Libre Baskerville";
+      color: #444;
+    }
+
+    a {
+      color: #444;
+    }
+
+    .all {
+      width: 1090px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .header svg {
+      width: 100%;
+      height: 500px;
+      margin: 40px 0;
+    }
+    .header h1 {
+      font-size: 64px;
+      margin-bottom: 0px;
+    }
+    .header .description {
+      margin: 20px auto;
+      width: 320px;
+      font-size: 18px;
+    }
+
+    .content {
+      position: relative;
+    }
+
+    .content svg {
+      position: absolute;
+      width: 900px;
+      height: 6200px;
+      top: 0;
+    }
+
+    .years {
+      position: absolute;
+      top: 0;
+      text-align: center;
+    }
+
+    .year {
+      font-size: 28px;
+    }
+
+    .titles {
+      position: absolute;
+      top: 0;
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    /* blend options taken from visual cinnamon tutorial: http://www.visualcinnamon.com/2016/05/beautiful-color-blending-svg-d3.html */
+    /*Set isolate on the group element*/
+    .flower {
+      isolation: isolate;
+      cursor: pointer;
+    }
+    /*Set blend mode on SVG element: e.g. screen, multiply*/
+    .flower circle, .legend circle { mix-blend-mode: multiply; }
+  </style>
+</head>
+
+<body>
+  <div class='all'>
+    <div class='header'>
+      <h1>film flowers</h1>
+      <div class='description'>
+        <p>top summer blockbusters reimagined as flowers</p>
+        (<a href='https://twitter.com/sxywu' target='_new'>shirley wu</a>)
+      </div>
+      <svg></svg>
+
+    </div>
+    <div class='content'>
+      <svg></svg>
+      <div class='years'></div>
+      <div class='titles'></div>
+    </div>
+  </div>
+
+  <script>
+    var strokeColor = '#444';
+    var flowerSize = 150;
+    var padding = 20;
+    var legend = d3.select('.header svg');
+
+    var svg = d3.select('.content svg')
+    	.style('left', flowerSize + 'px')
+    	.append('g')
+    	.attr('transform', 'translate(' + [padding, padding] + ')');
+    var years = d3.select('.years');
+    var titles = d3.select('.titles')
+    	.style('left', flowerSize + 'px')
+    	.style('padding', padding + 'px');
+
+		var petalPaths = [[
+    	'M0 0',
+      "C50 50 50 100 0 100",
+      "C-50 100 -50 50 0 0"
+    ],
+    [
+			'M-35 0',
+      'C-25 25 25 25 35 0',
+      'C50 25 25 75 0 100',
+      'C-25 75 -50 25 -35 0'
+    ],
+    [
+      'M0 0',
+      'C50 40 50 70 20 100',
+      'L0 85',
+      'L-20 100',
+      'C-50 70 -50 40 0 0'
+    ],
+    [
+      'M0 0',
+      'C50 25 50 75 0 100',
+      'C-50 75 -50 25 0 0'
+    ]];
+    var leaf = [
+      'M0 15',
+      'C15 40 15 60 0 75',
+      'C-15 60 -15 40 0 15'
+    ];
+
+    var numPetalScale = d3.scaleQuantize()
+    	.range(_.range(5, 15));
+    var flowerSizeScale = d3.scaleLinear()
+    	.range([.05, .5]);
+    var petalScale = d3.scaleOrdinal()
+    	.domain(['G', 'PG', 'PG-13', 'R'])
+    	.range(_.range(4));
+    var petalColors = d3.scaleOrdinal()
+    	.range(['#FFB09E', '#CBF2BD', '#AFE9FF', '#FFC8F0', '#FFF2B4']);
+
+    // blur effect taken from visualcinnamon:
+    // http://www.visualcinnamon.com/2016/05/real-life-motion-effects-d3-visualization.html
+    var defs = svg.append("defs");
+    defs.append("filter")
+      .attr("id", "motionFilter") 	//Give it a unique ID
+      .attr("width", "300%")		//Increase the width of the filter region to remove blur "boundary"
+      .attr("x", "-100%") 			//Make sure the center of the "width" lies in the middle of the element
+      .append("feGaussianBlur")	//Append a filter technique
+      .attr("in", "SourceGraphic")	//Perform the blur on the applied element
+      .attr("stdDeviation", "8 8");	//Do a blur of 8 standard deviations in the horizontal and vertical direction
+
+    /*****************************************************
+    ** get movie data
+    ******************************************************/
+
+    d3.json('movies.json', function(movies) {
+      movies = _.chain(movies)
+      	.map(function(movie) {
+        	movie.year = parseInt(movie.Year);
+          movie.genres = movie.Genre.split(', ');
+          movie.rating = parseFloat(movie.imdbRating);
+          movie.votes = parseInt(movie.imdbVotes.replace(/\,/g, ''));
+
+          return movie;
+        }).sortBy(function(movie) {
+        	return -movie.year
+        }).value();
+
+      // number of petals depending on number of rating votes
+      var minVotes = d3.min(movies, function(d) {return d.votes});
+      var maxVotes = d3.max(movies, function(d) {return d.votes});
+      numPetalScale.domain([minVotes, maxVotes]);
+      // overall flower size from rating
+      var minRating = d3.min(movies, function(d) {return d.rating});
+      var maxRating = d3.max(movies, function(d) {return d.rating});
+      flowerSizeScale.domain([minRating, maxRating]);
+      // get the top 4 genres by count
+      var topGenres = _.chain(movies)
+      	.map('genres').flatten()
+      	.countBy().toPairs()
+      	.sortBy(1).map(0)
+      	.takeRight(4)
+      	.value();
+      topGenres.push('Other');
+      petalColors.domain(topGenres);
+      // get all the years
+      var allYears = _.chain(movies)
+      	.map('year').uniq().value();
+
+      /*****************************************************
+      ** build legend
+      ******************************************************/
+      var fontSize = 12;
+      var legendWidth = 1090;
+
+      // petal shapes
+      var legendPetalShapes = legend.append('g')
+      	.attr('transform', 'translate(' + (legendWidth / 2) + ',0)')
+      	.selectAll('g')
+      	.data(['G', 'PG', 'PG-13', 'R'])
+      	.enter().append('g')
+      	.attr('transform', function(d, i) {
+          var x = i * (flowerSize / 2) - 112.5;
+          return 'translate(' + [x, 0] + ')scale(0.5)';
+        });
+      legendPetalShapes.append('path')
+        .attr('fill', 'none')
+        .attr('stroke', strokeColor)
+        .attr('stroke-width', 4)
+        .attr('d', function(rating) {
+          return petalPaths[petalScale(rating)];
+        });
+      legendPetalShapes.append('text')
+      	.attr('y', flowerSize)
+      	.attr('text-anchor', 'middle')
+      	.attr('fill', strokeColor)
+      	.style('font-size', fontSize / .5 + 'px')
+      	.text(function(d) {return d});
+
+      // petal colors
+      var legendPetalColors = legend.append('g')
+      	.attr('transform',
+              'translate(' + [legendWidth / 2, flowerSize * .9] + ')')
+      	.selectAll('g').data(topGenres)
+      	.enter().append('g')
+        .attr('transform', function(d, i) {
+          var x = i * (flowerSize / 2) - flowerSize;
+          return 'translate(' + [x, 0] + ')scale(0.5)';
+        });
+      legendPetalColors.append('circle')
+      	.attr('r', flowerSize / 3)
+      	.attr('fill', function(d) {return petalColors(d)})
+      	.style("filter", "url(#motionFilter)");
+      legendPetalColors.append('text')
+      	.attr('y', flowerSize * .75)
+      	.attr('text-anchor', 'middle')
+      	.attr('fill', strokeColor)
+      	.style('font-size', fontSize / .5 + 'px')
+      	.text(function(d) {return d});
+
+      // number of petals in a flower
+      var legendNumPetals = legend.append('g')
+      	.attr('transform',
+              'translate(' + [legendWidth / 2, flowerSize * .9 * 2] + ')')
+      	.selectAll('g')
+      	.data(_.times(5, function(i) {
+          var votes = minVotes + (maxVotes - minVotes) / 4 * i;
+          return Math.round(votes / 1000) * 1000;
+        })).enter().append('g')
+        .attr('transform', function(d, i) {
+          var x = i * (flowerSize * .6) - (flowerSize * .6 * 2);
+          return 'translate(' + [x, 0] + ')scale(0.3)';
+        });
+
+      legendNumPetals.selectAll('path')
+        .data(function(d) {
+        	var numPetals = numPetalScale(d);
+        	var path = petalPaths[petalScale('PG-13')];
+          return _.times(numPetals, function(i) {
+            return {
+              angle: (360/numPetals) * i,
+              path: path
+            }
+          });
+        }).enter().append('path')
+        .attr('stroke', strokeColor)
+        .attr('stroke-width', 2 / .3)
+        .attr('fill', 'none')
+        .attr('d', function(d) {return d.path.join(' ')})
+        .attr('transform', function(d) {
+          return 'rotate(' + [d.angle] + ')';
+        });
+
+      legendNumPetals.append('text')
+      	.attr('y', flowerSize * 1.25)
+      	.attr('text-anchor', 'middle')
+      	.attr('fill', strokeColor)
+      	.style('font-size', fontSize / .3 + 'px')
+      	.text(function(d, i) {
+         	return d3.format(',')(d / 1000) + 'k' +
+          	(i === 0 ? ' imdb votes' : '');
+       	});
+
+      // size of flower
+      var legendPetalSizes = legend.append('g')
+      	.attr('transform',
+              'translate(' + [legendWidth / 2, flowerSize * .9 * 3] + ')')
+      	.selectAll('g')
+      	.data(_.times(5, function(i) {
+          return minRating + (maxRating - minRating) / 4 * i;
+        })).enter().append('g')
+        .attr('transform', function(d, i) {
+          var x = i * (flowerSize * .8) - (flowerSize * .8 * 2);
+          return 'translate(' + [x, 0] + ')';
+        });
+
+      legendPetalSizes.selectAll('path')
+        .data(function(rating) {
+        	var numPetals = 5;
+        	var path = petalPaths[petalScale('PG-13')];
+          return _.times(numPetals, function(i) {
+            return {
+              scale: flowerSizeScale(rating),
+              angle: (360/numPetals) * i,
+              path: path
+            }
+          });
+        }).enter().append('path')
+        .attr('stroke', strokeColor)
+        .attr('stroke-width', function(d) {
+          return 2 / d.scale;
+        }).attr('fill', 'none')
+        .attr('d', function(d) {return d.path.join(' ')})
+        .attr('transform', function(d) {
+          return 'rotate(' + [d.angle] + ')scale(' + d.scale + ')';
+        });
+
+      legendPetalSizes.append('text')
+      	.attr('y', flowerSize / 2)
+      	.attr('dy', '.35em')
+      	.attr('text-anchor', 'middle')
+      	.attr('fill', strokeColor)
+      	.style('font-size', fontSize)
+        .text(function(d, i) {
+         	return d3.format('.1f')(d) + ' / 10';
+       	});
+      /*****************************************************
+      ** draw all flowers
+      ******************************************************/
+
+      // draw flower for each movie
+      var flowers = svg.selectAll('g.flower')
+        .data(_.values(movies)).enter().append('g')
+        .classed('flower', true)
+        .attr('transform', function(d, i) {
+          var scale = flowerSizeScale(d.rating);
+          var x = (i % 5) * flowerSize * 1.25;
+          var y = Math.floor(i / 5) * flowerSize * 1.5;
+          return 'translate(' + [x, y] +
+            ')scale(' + scale + ')';
+        }).on('click', function(d) {
+          window.open('http://www.imdb.com/title/' + d.imdbID, '_new');
+        });
+
+      // create the data for each flower's colors
+      flowers.selectAll('circle')
+      	.data(function(d) {
+        	// if there's only one genre, center the circle
+        	var cy = d.genres.length === 1 ? 0 : -flowerSize / 5;
+        	return _.map(d.genres, function(genre, i) {
+            genre = _.includes(topGenres, genre) ? genre : 'Other';
+            return {
+              cy: cy,
+              scale: flowerSizeScale(d.rating),
+              angle: (360/d.genres.length) * i,
+              fill: petalColors(genre)
+            }
+          });
+        }).enter().append('circle')
+      	.attr('cy', function(d) {return d.cy})
+        .attr('r', flowerSize / 2)
+      	.attr('fill', function(d) {return d.fill})
+      	.attr('transform', function(d) {
+          var x = flowerSize / 2 / d.scale;
+          var y = flowerSize / 2 / d.scale;
+          return 'translate(' + [x, y] +
+            ')rotate(' + d.angle + ')';
+        }).style("filter", "url(#motionFilter)");
+
+      // draw the flower petals
+      flowers.selectAll('path.petal')
+        .data(function(d) {
+        	var numPetals = numPetalScale(d.votes);
+        	var path = petalPaths[petalScale(d.Rated)];
+          return _.times(numPetals, function(i) {
+            return {
+              scale: flowerSizeScale(d.rating),
+              angle: (360/numPetals) * i,
+              path: path
+            }
+          });
+        }).enter().append('path')
+      	.classed('petal', true)
+        .attr('stroke', strokeColor)
+        .attr('stroke-width', function(d) {
+        	return 2 / d.scale;
+        }).attr('fill', 'none')
+        .attr('d', function(d) {return d.path.join(' ')})
+        .attr('transform', function(d) {
+          var cx = flowerSize / 2 / d.scale;
+          var cy = flowerSize / 2 / d.scale;
+          return 'translate(' + [cx, cy] +
+            ')rotate(' + [d.angle] + ')';
+        });
+
+      // draw the leaves
+      flowers.selectAll('path.leaf')
+      	.data(function(d) {
+        	var leaves = [];
+        	if (d.Seen) {
+            leaves.push({
+              scale: flowerSizeScale(d.rating),
+              angle: -120
+            });
+          }
+        	if (d.SeenOnRelease) {
+            leaves.push({
+              scale: flowerSizeScale(d.rating),
+              angle: 120
+            });
+          }
+        	return leaves;
+        }).enter().append('path')
+        .classed('leaf', true)
+        .attr('stroke', '#555')
+        .attr('stroke-width', function(d) {
+        	return 2 / d.scale;
+        }).attr('fill', '#4AB56D')
+      	.attr('d', leaf.join(' '))
+      	.attr('transform', function(d) {
+        	var cx = flowerSize / 2 / d.scale;
+          var cy = flowerSize / 2 / d.scale + flowerSize;
+          return 'translate(' + [cx, cy] +
+            ')rotate(' + [d.angle] + ')';
+        });
+
+      /*****************************************************
+      ** add annotation
+      ******************************************************/
+
+      // add the years to titles
+      years.selectAll('.year')
+      	.data(allYears).enter().append('h1')
+      	.classed('year', true)
+      	.style('margin', 0)
+      	.style('position', 'absolute')
+      	.style('width', flowerSize + 'px')
+        .style('top', function(d, i) {
+        	return i * flowerSize * 1.5 + flowerSize / 2 + 'px';
+        })
+        .text(function(d) {return d});
+
+      // finally add the titles
+      titles.selectAll('.title')
+      	.data(_.values(movies))
+        .enter().append('div')
+      	.classed('title', true)
+      	.style('position', 'absolute')
+      	.style('padding', '0 ' + padding + 'px')
+      	.style('width', flowerSize * 1.25 - 2 * padding + 'px')
+      	.style('left', function(d, i) {
+        	return (i % 5) * flowerSize * 1.25 + 'px';
+      	}).style('top', function(d, i) {
+        	return Math.floor(i / 5) * flowerSize * 1.5 + flowerSize * 1.1 + 'px';
+        }).text(function(d) {
+        	return d.Title;
+        });
+    });
+
+  </script>
+</body>
