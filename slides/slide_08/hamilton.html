@@ -2,10 +2,11 @@
   #hamilton {
     width: 1920px;
     height: 1080px;
+    position: relative;
   }
   #hamilton .iframe-container {
-    width: 1920px;
-    height: 1080px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
   }
   #hamilton iframe {
@@ -13,10 +14,31 @@
     height: 1080px;
     max-width: none;
   }
+  #hamilton .subtitle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(255,255,255,0.5);
+  }
+  #hamilton .subtitle span {
+    margin: auto;
+    margin-top: 25%;
+    display: inline-block;
+    font-weight: bold;
+    background: #fff;
+    padding: 5px 10px;
+  }
 </style>
 
 <section id="hamilton">
   <div class='iframe-container'>
-    <iframe src='slides/slide_08/hamilton/index.html' />
+    <iframe src='slides/slide_08/hamilton/index.html'></iframe>
+  </div>
+  <div class='subtitle fragment'>
+    <span>
+      manage exploratory tool
+    </span>
   </div>
 </section>
