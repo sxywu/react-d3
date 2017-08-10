@@ -14,25 +14,25 @@
 </style>
 
 <section id="reactcalculate">
+  <h2>where to calculate?</h2>
   <div class='side'>
-    <h2>where to calculate?</h2>
     <img src='slides/slide_11/reactd3.png' />
   </div>
 
   <div class='side'>
     <pre>
-      <code class='fragment' data-fragment-index='0'>
+      <code class='javascript fragment' data-fragment-index='0'>
 componentWillReceiveProps(nextProps) {
   // layouts, shapes, calculations that are only affected when data changes
   // can also use nextProps vs. this.props to selectively recalculate data
 }
       </code>
-      <code class='fragment' data-fragment-index='2'>
+      <code class='javascript fragment' data-fragment-index='2'>
 shouldComponentUpdate(nextProps) {
   // BONUS: if there's lots of sibling interactions, selectively update the DOM
 }
       </code>
-      <code class='fragment' data-fragment-index='1'>
+      <code class='javascript fragment' data-fragment-index='1'>
 render() {
   // calculations that are affected by interactions with the component itself
   // (like hover) but underlying data isn't changing
