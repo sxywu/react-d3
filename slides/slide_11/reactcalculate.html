@@ -21,27 +21,21 @@
 
   <div class='side'>
     <pre>
-      <code>
-class Graph extends Component {
-      </code>
       <code class='fragment' data-fragment-index='0'>
-  componentWillReceiveProps(nextProps) {
-    // layouts, shapes, calculations that are only affected when data changes
-    // can also use nextProps vs. this.props to selectively recalculate data
-  }
+componentWillReceiveProps(nextProps) {
+  // layouts, shapes, calculations that are only affected when data changes
+  // can also use nextProps vs. this.props to selectively recalculate data
+}
       </code>
       <code class='fragment' data-fragment-index='2'>
-  shouldComponentUpdate(nextProps) {
-    // BONUS: if there's lots of sibling interactions, selectively update the DOM
-  }
+shouldComponentUpdate(nextProps) {
+  // BONUS: if there's lots of sibling interactions, selectively update the DOM
+}
       </code>
       <code class='fragment' data-fragment-index='1'>
-  render() {
-    // calculations that are affected by interactions with the component itself
-    // (like hover) but underlying data isn't changing
-  }
-      </code>
-      <code>
+render() {
+  // calculations that are affected by interactions with the component itself
+  // (like hover) but underlying data isn't changing
 }
       </code>
     </pre>
