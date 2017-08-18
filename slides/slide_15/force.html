@@ -1,0 +1,37 @@
+<meta charset='utf-8'>
+<head>
+  <script src='../../js/react.min.js'></script>
+  <script src='../../js/react-dom.min.js'></script>
+  <script src='../../js/babel.min.js'></script>
+  <script src='../../js/d3.v4.min.js'></script>
+  <script src='../../js/lodash.js'></script>
+  <script src='../../js/generateData.js'></script>
+
+  <style>
+svg {
+  width: 900px;
+  height: 600px;
+}
+  </style>
+</head>
+
+<body>
+  <div id='root' />
+
+  <script type="text/babel">
+var width = 900;
+var height = 600;
+
+class App extends React.Component {
+  render() {
+    return (
+      <div />
+    );
+  }
+}
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+  </script>
+</body>
