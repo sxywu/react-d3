@@ -12,6 +12,28 @@ svg {
   width: 900px;
   height: 600px;
 }
+
+.update {
+  color: #333;
+  position:absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  margin: 10px;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+
+.node {
+  fill: #fff;
+  stroke: #666;
+  stroke-width: 2px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
   </style>
 </head>
 
@@ -19,8 +41,52 @@ svg {
   <div id='root' />
 
   <script type="text/babel">
-var width = 900;
-var height = 600;
+var width = 400;
+var height = 300;
+var simulation = d3.forceSimulation()
+  .force('collide', d3.forceCollide(d => 2 * d.size))
+  // .force('charge', d3.forceManyBody(-100))
+  .force('center', d3.forceCenter(width / 2, height / 2))
+  .stop();
+
+class Graph extends React.Component {
+  componentWillMount() {
+    this.calculateData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.calculateData(nextProps);
+  }
+
+  calculateData(props) {
+    var {nodes, links} = props;
+    simulation.nodes(nodes)
+      .force('link', d3.forceLink(links).id(d => d.key).distance(100));
+
+    _.times(5000, () => simulation.tick());
+  }
+
+  render() {
+    var nodes = _.map(this.props.nodes, node => {
+      if (!node.x || !node.y) debugger
+      return (<circle key={node.key} className='node'
+        cx={node.x} cy={node.y} r={node.size} />);
+    });
+    var links = _.map(this.props.links, link => {
+      return (
+        <line className='link' key={link.key} strokeWidth={link.size}
+          x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
+      );
+    });
+
+    return (
+      <svg>
+        {links}
+        {nodes}
+      </svg>
+    )
+  }
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -40,6 +106,10 @@ class App extends React.Component {
 
   render() {
     return (
+      <div>
+        <div className="update" onClick={this.updateData}>update</div>
+        <Graph {...this.state} />
+      </div>
     );
   }
 }
