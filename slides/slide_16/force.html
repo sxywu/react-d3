@@ -1,0 +1,169 @@
+<meta charset='utf-8'>
+<head>
+  <script src='../../js/react.min.js'></script>
+  <script src='../../js/react-dom.min.js'></script>
+  <script src='../../js/babel.min.js'></script>
+  <script src='../../js/d3.v4.min.js'></script>
+  <script src='../../js/lodash.js'></script>
+  <script src='../../js/generateData.js'></script>
+
+  <style>
+svg {
+  width: 400px;
+  height: 300px;
+}
+
+#root {
+  width: 400px;
+  text-align: center;
+  color: #333;
+}
+
+.update {
+  padding: 5px 10px;
+  margin: 10px;
+  cursor: pointer;
+  border: 1px solid #333;
+  display: inline-block;
+}
+
+.node {
+  fill: #fff;
+  stroke: #666;
+  stroke-width: 2px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+  </style>
+</head>
+
+<body>
+  <div id='root' />
+
+  <script type="text/babel">
+var width = 400;
+var height = 300;
+var simulation = d3.forceSimulation()
+  .force('collide', d3.forceCollide(d => 2 * d.size))
+  .force('charge', d3.forceManyBody(-100))
+  .force('center', d3.forceCenter(width / 2, height / 2))
+  .stop();
+
+class Graph extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {hover: null};
+  }
+
+  componentDidMount() {
+    this.container = d3.select(this.refs.container);
+    this.calculateData();
+    this.renderLinks();
+    this.renderNodes();
+  }
+
+  componentDidUpdate() {
+    this.calculateData();
+    this.renderLinks();
+    this.renderNodes();
+  }
+
+  calculateData() {
+    var {nodes, links} = this.props;
+    simulation.nodes(nodes)
+      .force('link', d3.forceLink(links).id(d => d.key).distance(100));
+
+    _.times(2000, () => simulation.tick());
+    this.nodes = nodes;
+    this.links = links;
+  }
+
+  renderNodes() {
+    var circles = this.container.selectAll('circle')
+      .data(this.nodes, d => d.key);
+    // exit
+    circles.exit().remove();
+    // enter + update
+    circles.enter().append('circle')
+      .classed('node', true)
+      .merge(circles)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+      .attr('r', d => d.size);
+  }
+
+  renderLinks() {
+    var links = this.container.selectAll('line')
+      .data(this.links, d => d.key);
+    // exit
+    links.exit().remove();
+    // enter + update
+    links.enter().insert('line', 'circle')
+      .classed('link', true)
+      .merge(links)
+      .attr('stroke-width', d => d.size)
+      .attr('x1', d => d.source.x)
+      .attr('x2', d => d.target.x)
+      .attr('y1', d => d.source.y)
+      .attr('y2', d => d.target.y);
+  }
+
+  render() {
+    var hoverStyle = {display: 'none'};
+    if (this.state.hover) {
+      hoverStyle = {
+        position: 'absolute',
+        left: this.state.hover.x + this.state.hover.size + 2,
+        top: this.state.hover.y - this.state.hover.size,
+        background: 'rgba(255,255,255,0.8)',
+        padding: '2px 5px',
+        display: 'block',
+        fontSize: 12,
+      }
+    }
+
+    return (
+      <div style={{position: 'relative'}}>
+        <svg ref='container' />
+        <div style={hoverStyle}>
+          {this.state.hover && this.state.hover.key}
+        </div>
+      </div>
+    )
+  }
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updateData = this.updateData.bind(this);
+    this.state = {nodes: [], links: []};
+  }
+
+  componentWillMount() {
+    this.updateData();
+  }
+
+  updateData() {
+    var newData = randomData(this.state.nodes, width, height);
+    this.setState(newData);
+  }
+
+  render() {
+    return (
+      <div>
+        <Graph {...this.state} />
+        <div className="update" onClick={this.updateData}>update</div>
+      </div>
+    );
+  }
+}
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+  </script>
+</body>
