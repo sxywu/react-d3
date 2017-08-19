@@ -16,10 +16,10 @@ svg {
 #root {
   width: 400px;
   text-align: center;
+  color: #333;
 }
 
 .update {
-  color: #333;
   padding: 5px 10px;
   margin: 10px;
   cursor: pointer;
@@ -53,6 +53,11 @@ var simulation = d3.forceSimulation()
   .stop();
 
 class Graph extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {hover: null};
+  }
+
   componentWillMount() {
     this.calculateData(this.props);
   }
@@ -70,23 +75,43 @@ class Graph extends React.Component {
   }
 
   render() {
-    var nodes = _.map(this.props.nodes, node => {
-      if (!node.x || !node.y) debugger
-      return (<circle key={node.key} className='node'
-        cx={node.x} cy={node.y} r={node.size} />);
-    });
     var links = _.map(this.props.links, link => {
       return (
         <line className='link' key={link.key} strokeWidth={link.size}
           x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
       );
     });
+    var nodes = _.map(this.props.nodes, node => {
+      if (!node.x || !node.y) debugger
+      return (<circle key={node.key} className='node'
+        cx={node.x} cy={node.y} r={node.size}
+        onMouseOver={() => this.setState({hover: node})}
+        onMouseLeave={() => this.setState({hover: null})} />);
+    });
+
+    var hoverStyle = {display: 'none'};
+    if (this.state.hover) {
+      hoverStyle = {
+        position: 'absolute',
+        left: this.state.hover.x + this.state.hover.size + 2,
+        top: this.state.hover.y - this.state.hover.size,
+        background: 'rgba(255,255,255,0.8)',
+        padding: '2px 5px',
+        display: 'block',
+        fontSize: 12,
+      }
+    }
 
     return (
-      <svg>
-        {links}
-        {nodes}
-      </svg>
+      <div style={{position: 'relative'}}>
+        <svg>
+          {links}
+          {nodes}
+        </svg>
+        <div style={hoverStyle}>
+          {this.state.hover && this.state.hover.key}
+        </div>
+      </div>
     )
   }
 }
