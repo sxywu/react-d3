@@ -2,37 +2,35 @@ function randomData(nodes, width, height) {
   var oldNodes = nodes;
   // generate some data randomly
   nodes = _.chain(_.range(_.random(10, 30)))
-    .map(function() {
-      var node = {};
-      node.key = _.random(0, 30);
-      node.size = _.random(4, 10);
-
-      return node;
-    }).uniq(function(node) {
-      return node.key;
-    }).value();
+    .map(() => {
+      return {
+        key: _.random(30),
+        size: _.random(4, 10),
+      };
+    }).uniqBy('key').value();
 
   if (oldNodes) {
     var end = _.random(oldNodes.length);
     var start = _.random(end);
     var add = _.slice(oldNodes, start, end + 1);
     nodes = _.chain(nodes)
-      .union(add).uniq(function(node) {
-        return node.key;
-      }).value();
+      .union(add).uniqBy('key').value();
   }
 
+  var nodeKeys = _.map(nodes, 'key');
   links = _.chain(_.range(_.random(15, 35)))
     .map(function() {
-      var link = {};
-      link.source = _.random(0, nodes.length - 1);
-      link.target = _.random(0, nodes.length - 1);
-      link.key = link.source + ',' + link.target;
-      link.size = _.random(1, 3);
+      var source = nodeKeys[_.random(nodes.length - 1)];
+      var target = nodeKeys[_.random(nodes.length - 1)];
+      if (source === target) return;
 
-      return link;
-    }).uniq((link) => link.key)
-    .value();
+      return {
+        source,
+        target,
+        key: source + ',' + target,
+        size: _.random(2, 4)
+      };
+    }).filter().uniqBy('key').value();
 
   maintainNodePositions(oldNodes, nodes, width, height);
 
