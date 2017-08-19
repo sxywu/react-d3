@@ -37,6 +37,13 @@ svg {
   stroke: #999;
   stroke-opacity: .6;
 }
+
+.hover {
+  position: absolute;
+  background: rgba(255,255,255,0.8);
+  padding: 2px 5px;
+  font-size: 12;
+}
   </style>
 </head>
 
@@ -92,13 +99,9 @@ class Graph extends React.Component {
     var hoverStyle = {display: 'none'};
     if (this.state.hover) {
       hoverStyle = {
-        position: 'absolute',
+        display: 'block',
         left: this.state.hover.x + this.state.hover.size + 2,
         top: this.state.hover.y - this.state.hover.size,
-        background: 'rgba(255,255,255,0.8)',
-        padding: '2px 5px',
-        display: 'block',
-        fontSize: 12,
       }
     }
 
@@ -108,7 +111,7 @@ class Graph extends React.Component {
           {links}
           {nodes}
         </svg>
-        <div style={hoverStyle}>
+        <div className='hover' style={hoverStyle}>
           {this.state.hover && this.state.hover.key}
         </div>
       </div>
