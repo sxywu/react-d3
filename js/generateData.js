@@ -5,7 +5,7 @@ function randomData(nodes, width, height) {
     .map(() => {
       return {
         key: _.random(30),
-        size: _.random(4, 10),
+        size: _.random(6, 10),
       };
     }).uniqBy('key').value();
 
@@ -49,7 +49,7 @@ function maintainNodePositions(oldNodes, nodes, width, height) {
       d.y = kv[d.key].y;
     } else {
       // else assign it a random position near the center
-      d.x = width / 2 + _.random(-150, 150);
+      d.x = width / 2 + _.random(-25, 25);
       d.y = height / 2 + _.random(-25, 25);
     }
   });
