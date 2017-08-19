@@ -13,9 +13,9 @@ function randomData(nodes, width, height) {
     }).value();
 
   if (oldNodes) {
-    var add = _.initial(oldNodes, _.random(0, oldNodes.length));
-    add = _.rest(add, _.random(0, add.length));
-
+    var end = _.random(oldNodes.length);
+    var start = _.random(end);
+    var add = _.slice(oldNodes, start, end + 1);
     nodes = _.chain(nodes)
       .union(add).uniq(function(node) {
         return node.key;
