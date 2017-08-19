@@ -1,7 +1,7 @@
 function randomData(nodes, width, height) {
   var oldNodes = nodes;
   // generate some data randomly
-  nodes = _.chain(_.range(_.random(10, 30)))
+  nodes = _.chain(_.range(_.random(10, 20)))
     .map(() => {
       return {
         key: _.random(30),
@@ -18,7 +18,7 @@ function randomData(nodes, width, height) {
   }
 
   var nodeKeys = _.map(nodes, 'key');
-  links = _.chain(_.range(_.random(15, 35)))
+  links = _.chain(_.range(_.random(15, 25)))
     .map(function() {
       var source = nodeKeys[_.random(nodes.length - 1)];
       var target = nodeKeys[_.random(nodes.length - 1)];
