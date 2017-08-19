@@ -23,9 +23,23 @@ var width = 900;
 var height = 600;
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updateData = this.updateData.bind(this);
+    this.state = {nodes: [], links: []};
+  }
+
+  componentWillMount() {
+    this.updateData();
+  }
+
+  updateData() {
+    var newData = randomData(this.state.nodes, width, height);
+    this.setState(newData);
+  }
+
   render() {
     return (
-      <div />
     );
   }
 }
