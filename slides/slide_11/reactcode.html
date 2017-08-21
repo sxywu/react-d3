@@ -43,12 +43,6 @@ class App extends React.Component {
   </pre></code>
 
   <pre><code class='javascript'>
-var simulation = d3.forceSimulation()
-  .force('collide', d3.forceCollide(d => 2 * d.size))
-  .force('charge', d3.forceManyBody(-100))
-  .force('center', d3.forceCenter(width / 2, height / 2))
-  .stop();
-
 class Graph extends React.Component {
   constructor(props) {
     super(props);
