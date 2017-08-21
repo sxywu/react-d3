@@ -5,7 +5,7 @@ function randomData(nodes, width, height) {
     .map(() => {
       return {
         key: _.random(30),
-        size: _.random(6, 10),
+        size: _.random(8, 16),
       };
     }).uniqBy('key').value();
 
