@@ -28,14 +28,14 @@ svg {
 }
 
 .node {
-  fill: #fff;
-  stroke: #666;
-  stroke-width: 2px;
+  fill: #ee8365;
+  stroke: #fff;
+  cursor: pointer;
 }
 
 .link {
-  stroke: #999;
-  stroke-opacity: .6;
+  stroke: #ee8365;
+  stroke-opacity: .5;
 }
   </style>
 </head>
@@ -55,7 +55,33 @@ var simulation = d3.forceSimulation()
 class Graph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {hover: null};
+    this.state = {selected: null};
+
+    this.selectNode = this.selectNode.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.version === this.props.version) {
+      // if version is the same, no updates to data
+      // so it must be interaction to select+highlight a node
+      var highlightedNodes = {};
+      this.links.attr('opacity', (d) => {
+        if (!nextState.selected) return 0.5;
+        if (d.source.key === nextState.selected) {
+          highlightedNodes[d.target.key] = 1;
+          return 0.5;
+        } else if (d.target.key === nextState.selected) {
+          highlightedNodes[d.source.key] = 1;
+          return 0.5;
+        }
+        return 0.1;
+      });
+      this.circles.attr('opacity', d => !nextState.selected ||
+        nextState.selected === d.key || highlightedNodes[d.key] ? 1 : 0.2);
+
+      return false;
+    }
+    return true;
   }
 
   componentDidMount() {
@@ -82,28 +108,29 @@ class Graph extends React.Component {
   }
 
   renderNodes() {
-    var circles = this.container.selectAll('circle')
+    this.circles = this.container.selectAll('circle')
       .data(this.nodes, d => d.key);
     // exit
-    circles.exit().remove();
+    this.circles.exit().remove();
     // enter + update
-    circles.enter().append('circle')
+    this.circles = this.circles.enter().append('circle')
       .classed('node', true)
-      .merge(circles)
+      .merge(this.circles)
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
-      .attr('r', d => d.size);
+      .attr('r', d => d.size)
+      .on('click', this.selectNode);
   }
 
   renderLinks() {
-    var links = this.container.selectAll('line')
+    this.links = this.container.selectAll('line')
       .data(this.links, d => d.key);
     // exit
-    links.exit().remove();
+    this.links.exit().remove();
     // enter + update
-    links.enter().insert('line', 'circle')
+    this.links = this.links.enter().insert('line', 'circle')
       .classed('link', true)
-      .merge(links)
+      .merge(this.links)
       .attr('stroke-width', d => d.size)
       .attr('x1', d => d.source.x)
       .attr('x2', d => d.target.x)
@@ -111,27 +138,17 @@ class Graph extends React.Component {
       .attr('y2', d => d.target.y);
   }
 
-  render() {
-    var hoverStyle = {display: 'none'};
-    if (this.state.hover) {
-      hoverStyle = {
-        position: 'absolute',
-        left: this.state.hover.x + this.state.hover.size + 2,
-        top: this.state.hover.y - this.state.hover.size,
-        background: 'rgba(255,255,255,0.8)',
-        padding: '2px 5px',
-        display: 'block',
-        fontSize: 12,
-      }
+  selectNode(node) {
+    if (node.key === this.state.selected) {
+      this.setState({selected: null});
+    } else {
+      this.setState({selected: node.key});
     }
+  }
 
+  render() {
     return (
-      <div style={{position: 'relative'}}>
-        <svg ref='container' />
-        <div style={hoverStyle}>
-          {this.state.hover && this.state.hover.key}
-        </div>
-      </div>
+      <svg ref='container' />
     )
   }
 }
@@ -140,7 +157,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.updateData = this.updateData.bind(this);
-    this.state = {nodes: [], links: []};
+    this.state = {nodes: [], links: [], version: 0};
   }
 
   componentWillMount() {
@@ -148,8 +165,8 @@ class App extends React.Component {
   }
 
   updateData() {
-    var newData = randomData(this.state.nodes, width, height);
-    this.setState(newData);
+    var {nodes, links} = randomData(this.state.nodes, width, height);
+    this.setState({nodes, links, version: this.state.version + 1});
   }
 
   render() {
