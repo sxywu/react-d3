@@ -28,21 +28,13 @@ svg {
 }
 
 .node {
-  fill: #fff;
-  stroke: #666;
-  stroke-width: 2px;
+  fill: #51aae8;
+  stroke: #fff;
+  cursor: pointer;
 }
 
 .link {
-  stroke: #999;
-  stroke-opacity: .6;
-}
-
-.hover {
-  position: absolute;
-  background: rgba(255,255,255,0.8);
-  padding: 2px 5px;
-  font-size: 12;
+  stroke: #51aae8;
 }
   </style>
 </head>
@@ -62,7 +54,7 @@ var simulation = d3.forceSimulation()
 class Graph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {hover: null};
+    this.state = {selected: null};
   }
 
   componentWillMount() {
@@ -75,46 +67,57 @@ class Graph extends React.Component {
 
   calculateData(props) {
     var {nodes, links} = props;
+    // set up force simulation to calculate node+link positions
     simulation.nodes(nodes)
       .force('link', d3.forceLink(links).id(d => d.key).distance(100));
-
+    // let force simulation run 2000 times
     _.times(2000, () => simulation.tick());
   }
 
+  selectNode(selected) {
+    if (selected === this.state.selected) {
+      this.setState({selected: null});
+    } else {
+      this.setState({selected: selected});
+    }
+  }
+
   render() {
+    // if a node has been selected, calculate the link+nodes it's connected to
+    var highlightedNodes = {};
+    var highlightedLinks = {};
+    if (this.state.selected) {
+      highlightedNodes[this.state.selected.key] = 1;
+      _.each(this.props.links, link => {
+        if (link.source.key === this.state.selected.key) {
+          highlightedNodes[link.target.key] = 1;
+          highlightedLinks[link.key] = 1;
+        }
+        if (link.target.key === this.state.selected.key) {
+          highlightedNodes[link.source.key] = 1;
+          highlightedLinks[link.key] = 1;
+        }
+      });
+    }
+
     var links = _.map(this.props.links, link => {
+      var opacity = !this.state.selected || highlightedLinks[link.key] ? 0.5 : 0.1;
       return (
-        <line className='link' key={link.key} strokeWidth={link.size}
+        <line className='link' key={link.key} opacity={opacity} strokeWidth={link.size}
           x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
       );
     });
     var nodes = _.map(this.props.nodes, node => {
-      if (!node.x || !node.y) debugger
-      return (<circle key={node.key} className='node'
-        cx={node.x} cy={node.y} r={node.size}
-        onMouseOver={() => this.setState({hover: node})}
-        onMouseLeave={() => this.setState({hover: null})} />);
+      var opacity = !this.state.selected || highlightedNodes[node.key] ? 1 : 0.2;
+      return (<circle key={node.key} className='node' opacity={opacity}
+        cx={node.x} cy={node.y} r={node.size} onClick={() => this.selectNode(node)} />);
     });
 
-    var hoverStyle = {display: 'none'};
-    if (this.state.hover) {
-      hoverStyle = {
-        display: 'block',
-        left: this.state.hover.x + this.state.hover.size + 2,
-        top: this.state.hover.y - this.state.hover.size,
-      }
-    }
-
     return (
-      <div style={{position: 'relative'}}>
-        <svg>
-          {links}
-          {nodes}
-        </svg>
-        <div className='hover' style={hoverStyle}>
-          {this.state.hover && this.state.hover.key}
-        </div>
-      </div>
+      <svg>
+        {links}
+        {nodes}
+      </svg>
     )
   }
 }
