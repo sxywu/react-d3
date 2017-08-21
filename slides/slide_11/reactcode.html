@@ -102,13 +102,13 @@ class Graph extends React.Component {
       var opacity = !this.state.selected || highlightedLinks[link.key] ? 0.5 : 0.1;
       return (
         <line className='link' key={link.key} opacity={opacity} strokeWidth={link.size}
-          x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
+          x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y}></link>
       );
     });
     var nodes = _.map(this.props.nodes, node => {
       var opacity = !this.state.selected || highlightedNodes[node.key] ? 1 : 0.2;
       return (<circle key={node.key} className='node' opacity={opacity}
-        cx={node.x} cy={node.y} r={node.size} onClick={() => this.selectNode(node)} />);
+        cx={node.x} cy={node.y} r={node.size} onClick={() => this.selectNode(node)}></circle>);
     });
 
     return (
