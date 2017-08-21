@@ -1,0 +1,123 @@
+<style>
+  #reactcode span {
+    line-height: 2;
+  }
+  #reactcode pre {
+    width: 900px;
+    box-shadow: none;
+    display: inline-block;
+    vertical-align: top;
+  }
+  #reactcode pre code {
+    max-height: 900px;
+  }
+</style>
+
+<section id="reactcode">
+  <pre><code class='javascript'>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updateData = this.updateData.bind(this);
+    this.state = {nodes: [], links: []};
+  }
+
+  componentWillMount() {
+    this.updateData();
+  }
+
+  updateData() {
+    var newData = randomData(this.state.nodes, width, height);
+    this.setState(newData);
+  }
+
+  render() {
+    return (
+      <div>
+        <Graph {...this.state}></Graph>
+        <div className="update" onClick={this.updateData}>update</div>
+      </div>
+    );
+  }
+}
+  </pre></code>
+
+  <pre><code class='javascript'>
+var simulation = d3.forceSimulation()
+  .force('collide', d3.forceCollide(d => 2 * d.size))
+  .force('charge', d3.forceManyBody(-100))
+  .force('center', d3.forceCenter(width / 2, height / 2))
+  .stop();
+
+class Graph extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {selected: null};
+  }
+
+  componentWillMount() {
+    this.calculateData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.calculateData(nextProps);
+  }
+
+  calculateData(props) {
+    var {nodes, links} = props;
+    // set up force simulation to calculate node+link positions
+    simulation.nodes(nodes)
+      .force('link', d3.forceLink(links).id(d => d.key).distance(100));
+    // let force simulation run 2000 times
+    _.times(2000, () => simulation.tick());
+  }
+
+  selectNode(selected) {
+    if (selected === this.state.selected) {
+      this.setState({selected: null});
+    } else {
+      this.setState({selected: selected});
+    }
+  }
+
+  render() {
+    // if a node has been selected, calculate the link+nodes it's connected to
+    var highlightedNodes = {};
+    var highlightedLinks = {};
+    if (this.state.selected) {
+      highlightedNodes[this.state.selected.key] = 1;
+      _.each(this.props.links, link => {
+        if (link.source.key === this.state.selected.key) {
+          highlightedNodes[link.target.key] = 1;
+          highlightedLinks[link.key] = 1;
+        }
+        if (link.target.key === this.state.selected.key) {
+          highlightedNodes[link.source.key] = 1;
+          highlightedLinks[link.key] = 1;
+        }
+      });
+    }
+
+    var links = _.map(this.props.links, link => {
+      var opacity = !this.state.selected || highlightedLinks[link.key] ? 0.5 : 0.1;
+      return (
+        <line className='link' key={link.key} opacity={opacity} strokeWidth={link.size}
+          x1={link.source.x} x2={link.target.x} y1={link.source.y} y2={link.target.y} />
+      );
+    });
+    var nodes = _.map(this.props.nodes, node => {
+      var opacity = !this.state.selected || highlightedNodes[node.key] ? 1 : 0.2;
+      return (<circle key={node.key} className='node' opacity={opacity}
+        cx={node.x} cy={node.y} r={node.size} onClick={() => this.selectNode(node)} />);
+    });
+
+    return (
+      <svg>
+        {links}
+        {nodes}
+      </svg>
+    )
+  }
+}
+  </code></pre>
+</section>
