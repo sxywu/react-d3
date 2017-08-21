@@ -1,0 +1,18 @@
+<style>
+  #reacttakeaways span {
+    line-height: 2;
+  }
+</style>
+
+<section id="reacttakeaways">
+  <h2>when react renders</h2>
+  <p>if user interaction <strong>does</strong> mutate data:</p>
+  <p>propagate from parent,</p>
+  <p>calculate in <strong>componentWillReceiveProps</strong>.</p>
+  <br />
+  <span class='fragment'>
+    <p>if interaction does <strong>not</strong> mutate data:</p>
+    <p>set state in component,</p>
+    <p>calculate in <strong>render</strong>.</p>
+  </span>
+</section>
