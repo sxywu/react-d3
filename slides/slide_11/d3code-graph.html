@@ -196,7 +196,7 @@ calculateData() {
     </code>
     <code class='javascript fragment' data-noescape data-fragment-index='2'>
 calculateHighlights(selected) {
-  <mark>this.highlightedNodes = {};</mark>
+  this.highlightedNodes = {};
   this.highlightedLinks = {};
   if (selected) {
     this.highlightedNodes[selected] = 1;
@@ -217,7 +217,7 @@ calculateHighlights(selected) {
 
   <pre class='highlight fragment fade-out' style='top:140px' data-fragment-index='4'>
     <code class='javascript fragment' data-noescape data-fragment-index='3'>
-render() {
+renderNodes() {
   this.circles = this.container.selectAll('circle')
     .data(this.nodes, d => d.key);
   // exit
@@ -247,11 +247,13 @@ selectNode(node) {
   }
 }
     </code>
+    <span class='javascript fragment' data-fragment-index='4'>* Best Practice</span>
   </pre>
+
   <pre class='highlight' style='top:140px'>
-    <code class='javascript fragment' data-fragment-index='5'>
+    <code class='javascript fragment' data-noescape data-fragment-index='5'>
 shouldComponentUpdate(nextProps, nextState) {
-  if (nextProps.version === this.props.version) {
+  <mark>if (nextProps.version === this.props.version) {</mark>
     // if version is the same, no updates to data
     // so it must be interaction to select+highlight a node
     this.calculateHighlights(nextState.selected);
@@ -259,7 +261,7 @@ shouldComponentUpdate(nextProps, nextState) {
       !nextState.selected || this.highlightedNodes[d.key] ? 1 : 0.2)
     this.lines.attr('opacity', d =>
       !nextState.selected || this.highlightedLinks[d.key] ? 0.5 : 0.1)
-    return false;
+    <mark>return false;</mark>
   }
   return true;
 }
