@@ -55,21 +55,11 @@ class Graph extends React.Component {
     if (nextProps.version === this.props.version) {
       // if version is the same, no updates to data
       // so it must be interaction to select+highlight a node
-      var highlightedNodes = {};
-      this.links.attr('opacity', (d) => {
-        if (!nextState.selected) return 0.5;
-        if (d.source.key === nextState.selected) {
-          highlightedNodes[d.target.key] = 1;
-          return 0.5;
-        } else if (d.target.key === nextState.selected) {
-          highlightedNodes[d.source.key] = 1;
-          return 0.5;
-        }
-        return 0.1;
-      });
-      this.circles.attr('opacity', d => !nextState.selected ||
-        nextState.selected === d.key || highlightedNodes[d.key] ? 1 : 0.2);
-
+      this.calculateHighlights(nextState.selected);
+      this.circles.attr('opacity', d =>
+        !nextState.selected || this.highlightedNodes[d.key] ? 1 : 0.2)
+      this.lines.attr('opacity', d =>
+        !nextState.selected || this.highlightedLinks[d.key] ? 0.5 : 0.1)
       return false;
     }
     return true;
@@ -78,12 +68,14 @@ class Graph extends React.Component {
   componentDidMount() {
     this.container = d3.select(this.refs.container);
     this.calculateData();
+    this.calculateHighlights(this.state.selected);
     this.renderLinks();
     this.renderNodes();
   }
 
   componentDidUpdate() {
     this.calculateData();
+    this.calculateHighlights(this.state.selected);
     this.renderLinks();
     this.renderNodes();
   }
@@ -98,6 +90,24 @@ class Graph extends React.Component {
     this.links = links;
   }
 
+  calculateHighlights(selected) {
+    this.highlightedNodes = {};
+    this.highlightedLinks = {};
+    if (selected) {
+      this.highlightedNodes[selected] = 1;
+      _.each(this.links, link => {
+        if (link.source.key === selected) {
+          this.highlightedNodes[link.target.key] = 1;
+          this.highlightedLinks[link.key] = 1;
+        }
+        if (link.target.key === selected) {
+          this.highlightedNodes[link.source.key] = 1;
+          this.highlightedLinks[link.key] = 1;
+        }
+      });
+    }
+  }
+
   renderNodes() {
     this.circles = this.container.selectAll('circle')
       .data(this.nodes, d => d.key);
@@ -110,23 +120,27 @@ class Graph extends React.Component {
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
       .attr('r', d => d.size)
+      .attr('opacity', d =>
+        !this.state.selected || this.highlightedNodes[d.key] ? 1 : 0.2)
       .on('click', this.selectNode);
   }
 
   renderLinks() {
-    this.links = this.container.selectAll('line')
+    this.lines = this.container.selectAll('line')
       .data(this.links, d => d.key);
     // exit
-    this.links.exit().remove();
+    this.lines.exit().remove();
     // enter + update
-    this.links = this.links.enter().insert('line', 'circle')
+    this.lines = this.lines.enter().insert('line', 'circle')
       .classed('link', true)
-      .merge(this.links)
+      .merge(this.lines)
       .attr('stroke-width', d => d.size)
       .attr('x1', d => d.source.x)
       .attr('x2', d => d.target.x)
       .attr('y1', d => d.source.y)
-      .attr('y2', d => d.target.y);
+      .attr('y2', d => d.target.y)
+      .attr('opacity', d =>
+        !this.state.selected || this.highlightedLinks[d.key] ? 0.5 : 0.1);
   }
 
   selectNode(node) {
@@ -139,7 +153,7 @@ class Graph extends React.Component {
 
   render() {
     return (
-      <svg ref='container'></svg>
+      <svg ref='container' />
     )
   }
 }
